@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import AirlinesList from './components/airline/AirlinesList';
+import AirlineDetails from './components/airline/AirlineDetails';
+import AirlineForm from './components/airline/AirlineForm';
+import PilotsList from './components/pilot/PilotsList';
+import PilotDetails from './components/pilot/PilotDetails';
+import Home from './components/common/Home';
+import Header from './components/common/Header';
+import HealthCheck from './components/common/HealthCheck';
+import Footer from './components/common/Footer';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/HealthCheck" element={<HealthCheck />} />
+
+        <Route path="/airlines" element={<AirlinesList />} />
+        <Route path="/airlines/:id" element={<AirlineDetails />} />
+        <Route path="/airlines/create" element={<AirlineForm />} />
+
+        <Route path="/pilots" element={<PilotsList />} />
+        <Route path="/pilots/:id" element={<PilotDetails />} />
+        <Route path="/pilots/create" element={<PilotDetails />} />
+      </Routes>
+      <Footer />
+    </>
   );
 }
 
