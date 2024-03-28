@@ -29,6 +29,7 @@ export async function authenticateUser(userName, password) {
         window.location.href = '/HealthCheck';
     } catch (error) {
         console.error('Error:', error);
+        return error.message;
     }
 }
 
@@ -60,7 +61,6 @@ export function getAuthToken() {
     }
 
     const tokenDuration = getTokenDuration();
-    console.log(tokenDuration);
     if (tokenDuration < 0) {
         return 'EXPIRED';
     }

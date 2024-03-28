@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function CreateButton({ destination, title }) {
     return (
         <div>

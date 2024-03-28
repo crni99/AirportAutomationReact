@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import useFetch from '../../hooks/useFetch';
-import { Pagination } from '../common/Pagination';
-import CreateButton from "../common/CreateButton";
-import SearchInputWithButton from "../common/SearchInputWithButton";
+import { Pagination } from '../common/pagination/Pagination';
+import Alert from '../common/Alert';
+import ListHeader from "../common/ListHeader";
 
 export default function AirlineList() {
     const [pageNumber, setPageNumber] = useState(1);
@@ -18,28 +18,16 @@ export default function AirlineList() {
         }
     }, [data]);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
     function handlePageChange(newPageNumber) {
         setPageNumber(newPageNumber);
     }
 
     return (
-        <div className="container mt-5">
-            <div className="row">
-                <div className="col-md-6 d-flex justify-content-between">
-                    <div className="custom-navbar">
-                        <CreateButton destination="/Airlines/Create" title="Create Airline" />
-                    </div>
-                    {airlines && airlines.length > 0 && (
-                        <SearchInputWithButton labelText="Search by Name:" />
-                    )}
-                </div>
-            </div>
+        <>
+            <ListHeader data={airlines} dataType="Airlines" createButtonTitle="Create Airline" searchText="Search by Name:" />
             <br />
-            {isError && error && <div className="alert alert-danger" role="alert">{error}</div>}
+            {isLoading && <Alert alertType="info" alertText="Loading..." />}
+            {isError && error && <Alert alertType="error" alertText={error} />}
             {!isError && !isLoading && (
                 <div className="form-horizontal">
                     <div className="form-group">
@@ -64,7 +52,7 @@ export default function AirlineList() {
                                 </table>
                             </div>
                         ) : (
-                            <div>No airlines available</div>
+                            <Alert alertType="info" alertText="No airlines available" />
                         )}
                         <div>
                             <Pagination pageNumber={pageNumber} lastPage={totalPages} onPageChange={handlePageChange} />
@@ -72,6 +60,6 @@ export default function AirlineList() {
                     </div>
                 </div>
             )}
-        </div>
+        </>
     );
 }

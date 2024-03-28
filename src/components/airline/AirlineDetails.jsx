@@ -1,20 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
-import PageNavigationActions from '../common/PageNavigationActions';
+import { deleteData } from '../../util/delete'
+import { useNavigate } from 'react-router-dom';
+import PageNavigationActions from '../common/pagination/PageNavigationActions';
+import Alert from '../common/Alert';
+
+const DATA_TYPE = "Airlines";
 
 export default function AirlineDetails() {
     const { id } = useParams();
-    const { data: airline, error, isLoading } = useFetch('Airlines', id);
+    const { data: airline, error, isLoading } = useFetch(DATA_TYPE, id);
+    const navigate = useNavigate();
+    const [deleteError, setDeleteError] = useState(null);
+    const [isPending, setIsPending] = useState(false);
+
+    const handleDelete = async () => {
+        try {
+            setIsPending(true);
+            const deleteResult = await deleteData(DATA_TYPE, id, navigate);
+            
+            if (deleteResult) {
+                console.error('Error deleting airline:', deleteResult);
+                setDeleteError(deleteResult);
+            }
+        } catch (deleteError) {
+            console.error('Error deleting airline:', deleteError);
+            setDeleteError(deleteError.message);
+        } finally {
+            setIsPending(false);
+        }
+    };
+
+    const handleEdit = async () => {
+        return <h1> EDITED </h1>;
+    }
 
     return (
-        <div className="container">
-            <main role="main" className="pb-3">
-                {isLoading && <div>Loading...</div>}
-                {error && <div className="alert alert-danger" role="alert">Error: {error}</div>}
-                {airline && (
+        <>
+            <h1 className="text-center">Airline Details</h1>
+            {isLoading && <Alert alertType="info" alertText="Loading..." />}
+            {isPending && <Alert alertType="info" alertText="Loading..." />}
+            {error && <Alert alertType="error" alertText={error} />}
+            {deleteError && <Alert alertType="error" alertText={deleteError} />}
+            {airline && (
+                <>
                     <div>
-                        <h4>Airline Details</h4>
                         <hr />
                         <dl className="row">
                             <dt className="col-sm-2">Id</dt>
@@ -23,9 +54,9 @@ export default function AirlineDetails() {
                             <dd className="col-sm-10">{airline.name}</dd>
                         </dl>
                     </div>
-                )}
-                <PageNavigationActions dataType="/Airlines" dataId={id}/>
-            </main>
-        </div>
+                    <PageNavigationActions dataType={DATA_TYPE} dataId={id} onEdit={handleEdit} onDelete={handleDelete}/>
+                </>
+            )}
+        </>
     );
 }

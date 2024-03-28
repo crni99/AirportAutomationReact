@@ -1,8 +1,8 @@
 import React from "react";
 
-export function Alert({ alertType, alertText }) {
+export default function Alert({ alertType, alertText }) {
 
-    let alertClasses = "alert ";
+    let alertClasses = "text-center mt-4 alert ";
 
     if (alertType === 'success') {
         alertClasses += "alert-success";
@@ -10,7 +10,7 @@ export function Alert({ alertType, alertText }) {
     else if (alertType === 'info') {
         alertClasses += "alert-info";
     }
-    else if (alertType === 'danger') {
+    else if (alertType === 'danger' || alertType === 'error') {
         alertClasses += "alert-danger";
     }
     else {

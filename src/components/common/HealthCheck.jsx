@@ -1,15 +1,9 @@
+import React from 'react';
 import useFetch from "../../hooks/useFetch";
+import Alert from '../common/Alert';
 
 export default function HealthCheck() {
     const { data, error, isLoading, isError } = useFetch('HealthCheck', null);
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (isError) {
-        return <div>Error: {error}</div>;
-    }
 
     return (
         <div className="container mt-5">
@@ -18,7 +12,9 @@ export default function HealthCheck() {
             </div>
             <div className="form-horizontal">
                 <div className="form-group">
-                    {data ? (
+                    {isLoading && <Alert alertType="info" alertText="Loading..." />}
+                    {isError && error && <Alert alertType="error" alertText={error} />}
+                    {data && !isError && !error ? (
                         <div>
                             <dl className="row">
                                 <dt className="col-sm-2">Status</dt>
@@ -36,9 +32,9 @@ export default function HealthCheck() {
                             <br />
                             <dl className="row">
                                 <dt className="col-sm-3">Name</dt>
-                                <dt className="col-sm-3">Description</dt>
-                                <dt className="col-sm-3">Duration</dt>
-                                <dt className="col-sm-3">Status</dt>
+                                <dd className="col-sm-3">Description</dd>
+                                <dd className="col-sm-3">Duration</dd>
+                                <dd className="col-sm-3">Status</dd>
                             </dl>
                             <hr />
                             {Object.keys(data.entries).map((key, index) => (
@@ -60,7 +56,7 @@ export default function HealthCheck() {
                             ))}
                         </div>
                     ) : (
-                        <div>Data not found</div>
+                        <Alert alertType="info" alertText="No data available" />
                     )}
                 </div>
             </div>

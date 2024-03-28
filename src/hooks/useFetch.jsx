@@ -30,11 +30,18 @@ export default function useFetch(dataType, dataId, page = 1) {
                 const response = await fetch(url, {
                     headers: headers
                 });
-                if (!response.ok) {
+                if (response.status === 200) {
+                    const responseData = await response.json();
+                    setData(responseData);
+                } else if (response.status === 204) {
+                    setData([]);
+                } else if (response.status === 400) {
+                    throw new Error(`Invalid request for ${dataType}`);
+                } else if (response.status === 401) {
+                    throw new Error(`Unauthorized to access ${dataType}`);
+                } else {
                     throw new Error(`Failed to fetch data for ${dataType}`);
                 }
-                const responseData = await response.json();
-                setData(responseData);
             } catch (error) {
                 console.error(`Error fetching data for ${dataType}:`, error);
                 setError(error.message);

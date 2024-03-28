@@ -1,3 +1,4 @@
+import React from 'react';
 import { handleSignOut, getAuthToken } from "../../util/auth";
 
 export default function Header() {

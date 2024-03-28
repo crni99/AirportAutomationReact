@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createData } from '../../util/create.js';
+import Alert from '../common/Alert';
+import BackToListAction from '../common/pagination/BackToListAction.jsx';
 
 export default function AirlineForm() {
     const navigate = useNavigate();
@@ -29,39 +31,34 @@ export default function AirlineForm() {
     };
 
     return (
-        <div className="container">
-            <main role="main" className="pb-3">
-                <h4>Create Airline</h4>
-                <hr />
-                <div className="row">
-                    <div className="col-md-4">
-                        <form onSubmit={handleSubmit}>
-                            {error && <div className="text-danger">{error}</div>}
-                            <div className="form-group pb-4">
-                                <label htmlFor="name" className="control-label">Name</label>
-                                <input
-                                    id="name"
-                                    type="text"
-                                    className="form-control"
-                                    value={name}
-                                    onChange={(event) => setName(event.target.value)}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <button type="submit" className="btn btn-success" disabled={isPending}>{isPending ? 'Creating...' : 'Create'}</button>
-                            </div>
-                        </form>
+        <>
+            <h1 className="text-center">Create Airline</h1>
+            <div className="col-md-4">
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group pb-4">
+                        <label htmlFor="name" className="control-label">Name</label>
+                        <input
+                            id="name"
+                            type="text"
+                            placeholder="Air Serbia"
+                            className="form-control"
+                            value={name}
+                            onChange={(event) => setName(event.target.value)}
+                            required
+                            maxLength="255"
+                        />
                     </div>
-                </div>
-                <nav aria-label="Page navigation">
-                    <ul className="pagination pagination-container pagination-container-absolute">
-                        <li className="page-item">
-                            <a className="page-link" href="/Airline">Back to List</a>
-                        </li>
-                    </ul>
-                </nav>
-            </main>
-        </div>
+                    <div className="form-group">
+                        <button type="submit" className="btn btn-success" disabled={isPending}>{isPending ? 'Creating...' : 'Create'}</button>
+                    </div>
+                    {error && <Alert alertType="error" alertText={error} />}
+                </form>
+            </div>
+            <nav aria-label="Page navigation">
+                <ul className="pagination pagination-container pagination-container-absolute">
+                    <BackToListAction dataType="Airlines" />
+                </ul>
+            </nav>
+        </>
     );
 }
