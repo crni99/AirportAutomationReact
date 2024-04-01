@@ -1,16 +1,17 @@
 import React from 'react';
+import PageTitle from '../common/PageTitle.jsx';
 import CreateButton from "../common/CreateButton";
 import SearchInputWithButton from "../common/SearchInputWithButton";
 
-export default function ListHeader({ data, dataType, createButtonTitle, searchText }) {
+export default function ListHeader({ dataExist, dataType, createButtonTitle, searchText }) {
     return (
         <div className="row">
-            <h1 className="text-center">{dataType}</h1>
+            <PageTitle title={dataType} />
             <div className="col-md-6 d-flex justify-content-between">
                 <div className="custom-navbar">
                     <CreateButton destination={`/${dataType}/Create`} title={createButtonTitle} />
                 </div>
-                {data && data.length > 0 && (
+                {dataExist && (
                     <SearchInputWithButton labelText={searchText} />
                 )}
             </div>

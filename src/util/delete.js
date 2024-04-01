@@ -1,8 +1,7 @@
 import { getAuthToken } from '../util/auth.js';
 
-export async function deleteData(dataType, dataId, navigate) {
+export async function deleteData(dataType, dataId, apiUrl, navigate) {
     try {
-
         const authToken = getAuthToken();
         const headers = {
             'Content-Type': 'application/json'
@@ -11,7 +10,7 @@ export async function deleteData(dataType, dataId, navigate) {
             headers['Authorization'] = `Bearer ${authToken}`;
         }
 
-        const response = await fetch(`https://localhost:44362/api/${dataType}/${dataId}`, {
+        const response = await fetch(`${apiUrl}/${dataType}/${dataId}`, {
             method: 'DELETE',
             headers: headers
         });
@@ -22,6 +21,10 @@ export async function deleteData(dataType, dataId, navigate) {
             throw new Error('Invalid request to delete data');
         } else if (response.status === 401) {
             throw new Error('Unauthorized to delete data');
+        } else if (response.status === 404) {
+            throw new Error(`Not found: The requested resource with id ${dataId} does not exist.`);
+        } else if (response.status === 409) {
+            throw new Error(`Data with id ${dataId} is being referenced by other entities and cannot be deleted`);
         } else {
             throw new Error('Failed to delete data');
         }

@@ -1,52 +1,62 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
-import { deleteData } from '../../util/delete'
-import { useNavigate } from 'react-router-dom';
+import { deleteData } from '../../util/delete';
+import { editData } from '../../util/edit.js';
+import PageTitle from '../common/PageTitle.jsx';
+import LoadingSpinner from '../common/LoadingSpinner';
 import PageNavigationActions from '../common/pagination/PageNavigationActions';
 import Alert from '../common/Alert';
+import { useContext } from 'react';
+import { DataContext } from '../../store/data-context';
 
 const DATA_TYPE = "Airlines";
 
 export default function AirlineDetails() {
+    const dataCtx = useContext(DataContext);
     const { id } = useParams();
-    const { data: airline, error, isLoading } = useFetch(DATA_TYPE, id);
+    const { data: airline, dataExist, error, isLoading } = useFetch(DATA_TYPE, id);
     const navigate = useNavigate();
-    const [deleteError, setDeleteError] = useState(null);
-    const [isPending, setIsPending] = useState(false);
 
-    const handleDelete = async () => {
+    // Consolidating state variables into a single object
+    const [operationState, setOperationState] = useState({
+        operationError: null,
+        isPending: false
+    });
+
+    const handleOperation = async (operation) => {
         try {
-            setIsPending(true);
-            const deleteResult = await deleteData(DATA_TYPE, id, navigate);
-            
-            if (deleteResult) {
-                console.error('Error deleting airline:', deleteResult);
-                setDeleteError(deleteResult);
+            setOperationState({ ...operationState, isPending: true });
+            let operationResult;
+
+            if (operation === 'edit') {
+                operationResult = await editData(DATA_TYPE, id, dataCtx.apiUrl, navigate);
+            } else if (operation === 'delete') {
+                operationResult = await deleteData(DATA_TYPE, id, dataCtx.apiUrl, navigate);
             }
-        } catch (deleteError) {
-            console.error('Error deleting airline:', deleteError);
-            setDeleteError(deleteError.message);
+
+            if (operationResult) {
+                console.error(`Error ${operation}ing airline:`, operationResult);
+                setOperationState({ ...operationState, operationError: operationResult });
+            }
+        } catch (operationError) {
+            console.error(`Error ${operation}ing airline:`, operationError);
+            setOperationState({ ...operationState, operationError: operationError.message });
         } finally {
-            setIsPending(false);
+            setOperationState({ ...operationState, isPending: false });
         }
     };
 
-    const handleEdit = async () => {
-        return <h1> EDITED </h1>;
-    }
-
     return (
         <>
-            <h1 className="text-center">Airline Details</h1>
-            {isLoading && <Alert alertType="info" alertText="Loading..." />}
-            {isPending && <Alert alertType="info" alertText="Loading..." />}
+            <PageTitle title='Airline Details' />
+            {(isLoading || operationState.isPending) && <LoadingSpinner />}
             {error && <Alert alertType="error" alertText={error} />}
-            {deleteError && <Alert alertType="error" alertText={deleteError} />}
-            {airline && (
+            {operationState.operationError && <Alert alertType="error" alertText={operationState.operationError} />}
+            {dataExist && (
                 <>
                     <div>
-                        <hr />
+                        <br />
                         <dl className="row">
                             <dt className="col-sm-2">Id</dt>
                             <dd className="col-sm-10">{airline.id}</dd>
@@ -54,7 +64,8 @@ export default function AirlineDetails() {
                             <dd className="col-sm-10">{airline.name}</dd>
                         </dl>
                     </div>
-                    <PageNavigationActions dataType={DATA_TYPE} dataId={id} onEdit={handleEdit} onDelete={handleDelete}/>
+                    <PageNavigationActions dataType={DATA_TYPE} dataId={id} onEdit={() => handleOperation('edit')}
+                        onDelete={() => handleOperation('delete')} />
                 </>
             )}
         </>

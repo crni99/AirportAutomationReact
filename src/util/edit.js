@@ -1,6 +1,6 @@
 import { getAuthToken } from '../util/auth.js';
 
-export async function createData(data, dataType, apiUrl, navigate) {
+export async function editData(data, dataType, dataId, apiUrl, navigate) {
     try {
 
         const authToken = getAuthToken();
@@ -11,14 +11,13 @@ export async function createData(data, dataType, apiUrl, navigate) {
             headers['Authorization'] = `Bearer ${authToken}`;
         }
 
-        const response = await fetch(`${apiUrl}/${dataType}`, {
-            method: 'POST',
+        const response = await fetch(`${apiUrl}/${dataType}/${dataId}`, {
+            method: 'PUT',
             headers: headers,
             body: JSON.stringify(data)
         });
-        if (response.ok) {
-            const responseData = await response.json();
-            navigate(`/${dataType}/${responseData.id}`);
+        if (response.ok || response.status === 204) {
+            navigate(`/${dataType}/${dataId}`);
         } else if (response.status === 400) {
             throw new Error('Bad request: The server cannot process the request due to a client error.');
         } else if (response.status === 401) {

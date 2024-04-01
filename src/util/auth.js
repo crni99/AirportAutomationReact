@@ -1,13 +1,16 @@
 import { redirect } from 'react-router-dom';
 
-export async function authenticateUser(userName, password) {
+export async function authenticateUser(userName, password, apiUrl) {
     const userCredentials = {
         UserName: userName,
         Password: password
     };
 
     try {
-        const response = await fetch('https://localhost:44362/api/Authentication', {
+        if (!apiUrl) {
+            throw new Error('API URL is not available');
+        }
+        const response = await fetch(`${apiUrl}/Authentication`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -16,7 +19,7 @@ export async function authenticateUser(userName, password) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to authenticate');
+            throw new Error('Authentication failed. Please check your credentials.');
         }
 
         const token = await response.text();

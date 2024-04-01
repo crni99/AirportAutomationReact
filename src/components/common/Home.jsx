@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useContext } from 'react';
+import { DataContext } from '../../store/data-context';
 import { getAuthToken, authenticateUser } from '../../util/auth';
 import Alert from '../common/Alert';
 
 export default function Home() {
+    const dataCtx = useContext(DataContext);
     const isLoggedIn = getAuthToken() !== null;
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -11,7 +14,7 @@ export default function Home() {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         try {
-            const authError = await authenticateUser(userName, password);
+            const authError = await authenticateUser(userName, password, dataCtx.apiUrl);
             setError(authError);
         } catch (error) {
             console.error('Error:', error);

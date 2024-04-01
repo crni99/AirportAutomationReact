@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import AirlinesList from './components/airline/AirlinesList';
-import AirlineDetails from './components/airline/AirlineDetails';
-import AirlineForm from './components/airline/AirlineForm';
+import AirlineRoutes from './routes/airlineRoutes';
+/* import DestinationsRoutes from './routes/destinationRoutes'; */
 import Home from './components/common/Home';
 import Header from './components/common/Header';
 import HealthCheck from './components/common/HealthCheck';
 import Footer from './components/common/Footer';
+import { DataContext } from './store/data-context';
 
 function App() {
+
+  const dataContext = useContext(DataContext);
+
   return (
-    <>
+    <DataContext.Provider value={dataContext}>
       <Header />
       <div className="container mt-4">
         <div className="row">
@@ -18,14 +21,13 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/HealthCheck" element={<HealthCheck />} />
 
-            <Route path="/airlines" element={<AirlinesList />} />
-            <Route path="/airlines/:id" element={<AirlineDetails />} />
-            <Route path="/airlines/create" element={<AirlineForm />} />
+            {AirlineRoutes}
+
           </Routes>
         </div>
       </div>
       <Footer />
-    </>
+    </DataContext.Provider>
   );
 }
 

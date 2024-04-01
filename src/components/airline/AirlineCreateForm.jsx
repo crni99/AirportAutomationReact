@@ -1,38 +1,47 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createData } from '../../util/create.js';
-import Alert from '../common/Alert';
+import PageTitle from '../common/PageTitle.jsx';
+import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
+import { useContext } from 'react';
+import { DataContext } from '../../store/data-context.jsx';
 
-export default function AirlineForm() {
+export default function AirlineCreateForm() {
+    const dataCtx = useContext(DataContext);
     const navigate = useNavigate();
-    const [name, setName] = useState('');
-    const [error, setError] = useState(null);
-    const [isPending, setIsPending] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        error: null,
+        isPending: false
+    });
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         const airline = {
-            Name: name
+            Name: formData.name
         }
 
-        setIsPending(true);
-        const create = await createData(airline, 'Airlines', navigate);
+        setFormData({ ...formData, isPending: true });
+        const create = await createData(airline, 'Airlines', dataCtx.apiUrl, navigate);
 
         if (create) {
             console.error('Error creating airline:', create);
-            setError(create);
+            setFormData({ ...formData, error: create });
         } else {
-            setName('');
-            setError(null);
+            setFormData({ name: '', error: null, isPending: false });
         }
-        setIsPending(false);
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({ ...formData, [name]: value });
     };
 
     return (
         <>
-            <h1 className="text-center">Create Airline</h1>
+            <PageTitle title='Create Airline' />
             <div className="col-md-4">
                 <form onSubmit={handleSubmit}>
                     <div className="form-group pb-4">
@@ -40,18 +49,19 @@ export default function AirlineForm() {
                         <input
                             id="name"
                             type="text"
-                            placeholder="Air Serbia"
                             className="form-control"
-                            value={name}
-                            onChange={(event) => setName(event.target.value)}
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            placeholder="Air Serbia"
                             required
                             maxLength="255"
                         />
                     </div>
                     <div className="form-group">
-                        <button type="submit" className="btn btn-success" disabled={isPending}>{isPending ? 'Creating...' : 'Create'}</button>
+                        <button type="submit" className="btn btn-success" disabled={formData.isPending}>{formData.isPending ? 'Creating...' : 'Create'}</button>
                     </div>
-                    {error && <Alert alertType="error" alertText={error} />}
+                    {formData.error && <Alert alertType="error" alertText={formData.error} />}
                 </form>
             </div>
             <nav aria-label="Page navigation">
