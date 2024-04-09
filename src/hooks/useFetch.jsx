@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getAuthToken } from '../util/auth.js';
 import { useContext } from 'react';
 import { DataContext } from '../store/data-context.jsx';
+import { generateErrorMessage, handleNetworkError } from '../util/errorUtils.js';
 
 export default function useFetch(dataType, dataId, page = 1) {
     const dataCtx = useContext(DataContext);
@@ -20,7 +21,6 @@ export default function useFetch(dataType, dataId, page = 1) {
                 }
                 const url = buildUrl(dataCtx.apiUrl, dataType, dataId, page, dataCtx.pageSize);
                 const response = await fetch(url, { headers: buildHeaders() });
-
                 handleResponse(response);
             } catch (error) {
                 handleFetchError(error);
@@ -52,27 +52,31 @@ export default function useFetch(dataType, dataId, page = 1) {
     }
 
     async function handleResponse(response) {
-        if (response.status === 200) {
-            const responseData = await response.json();
-            setData(responseData);
-            setDataExist(true);
-        } else if (response.status === 204) {
-            setData([]);
-            setDataExist(false);
-        } else if (response.status === 400) {
-            throw new Error(`Invalid request for ${dataType}`);
-        } else if (response.status === 401) {
-            throw new Error(`Unauthorized to access ${dataType}`);
-        } else if (response.status === 404) {
-            throw new Error(`Not found: The requested resource does not exist.`);
-        } else {
-            throw new Error(`Failed to fetch data for ${dataType}`);
+        try {
+            if (response.ok) {
+                if (response.status === 204) {
+                    setData([]);
+                    setDataExist(false);
+                } else {
+                    const responseData = await response.json();
+                    setData(responseData);
+                    setDataExist(true);
+                }
+            } else {
+                throw new Error(await generateErrorMessage(response, dataType, dataId));
+            }
+        } catch (error) {
+            handleFetchError(error);
         }
     }
 
     function handleFetchError(error) {
-        console.error(`Error fetching data for ${dataType}:`, error);
-        setError(error.message);
+        const networkErrorMessage = handleNetworkError(error);
+        if (networkErrorMessage) {
+            setError(networkErrorMessage);
+        } else {
+            setError(error);
+        }
         setIsError(true);
     }
 

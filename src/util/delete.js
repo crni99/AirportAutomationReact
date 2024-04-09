@@ -1,4 +1,5 @@
 import { getAuthToken } from '../util/auth.js';
+import { generateErrorMessage, handleNetworkError } from '../util/errorUtils.js';
 
 export async function deleteData(dataType, dataId, apiUrl, navigate) {
     try {
@@ -15,21 +16,20 @@ export async function deleteData(dataType, dataId, apiUrl, navigate) {
             headers: headers
         });
 
-        if (response.ok) {
+        if (response.ok || response.status === 204) {
             navigate(`/${dataType}`);
-        } else if (response.status === 400) {
-            throw new Error('Invalid request to delete data');
-        } else if (response.status === 401) {
-            throw new Error('Unauthorized to delete data');
-        } else if (response.status === 404) {
-            throw new Error(`Not found: The requested resource with id ${dataId} does not exist.`);
-        } else if (response.status === 409) {
-            throw new Error(`Data with id ${dataId} is being referenced by other entities and cannot be deleted`);
         } else {
-            throw new Error('Failed to delete data');
+            const errorMessage = await generateErrorMessage(response, dataType, dataId);
+            throw new Error(errorMessage);
         }
     } catch (error) {
-        console.error('Error deleting data:', error);
-        return error.message;
+        const networkErrorMessage = handleNetworkError(error);
+        if (networkErrorMessage) {
+            return networkErrorMessage;
+        } else {
+            console.error('Error creating data:', error);
+        }
+        return error;
     }
 }
+

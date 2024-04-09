@@ -15,11 +15,18 @@ export default function Home() {
         event.preventDefault();
         try {
             const authError = await authenticateUser(userName, password, dataCtx.apiUrl);
-            setError(authError);
+            if (authError) {
+                setError(authError.message);
+            } else {
+                setError(null);
+            }
+
         } catch (error) {
             console.error('Error:', error);
+            setError('An unexpected error occurred. Please try again later.');
         }
     };
+
 
     return (
         <div className="container">

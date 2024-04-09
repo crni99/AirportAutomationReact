@@ -29,7 +29,7 @@ export default function AirlineList() {
             <ListHeader dataExist={dataExist} dataType="Airlines" createButtonTitle="Create Airline" searchText="Search by Name:" />
             <br />
             {isLoading && <LoadingSpinner />}
-            {isError && error && <Alert alertType="error" alertText={error} />}
+            {isError && error && <Alert alertType="error" alertText={error.message} />}
             {!isError && !isLoading && (
                 <div className="form-horizontal">
                     <div className="form-group">

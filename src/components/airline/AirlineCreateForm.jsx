@@ -27,8 +27,8 @@ export default function AirlineCreateForm() {
         const create = await createData(airline, 'Airlines', dataCtx.apiUrl, navigate);
 
         if (create) {
-            console.error('Error creating airline:', create);
-            setFormData({ ...formData, error: create });
+            console.error('Error creating airline:', create.message);
+            setFormData({ ...formData, error: create.message });
         } else {
             setFormData({ name: '', error: null, isPending: false });
         }

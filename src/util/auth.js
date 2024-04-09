@@ -1,4 +1,5 @@
 import { redirect } from 'react-router-dom';
+import { generateErrorMessage, handleNetworkError } from '../util/errorUtils.js';
 
 export async function authenticateUser(userName, password, apiUrl) {
     const userCredentials = {
@@ -19,7 +20,13 @@ export async function authenticateUser(userName, password, apiUrl) {
         });
 
         if (!response.ok) {
-            throw new Error('Authentication failed. Please check your credentials.');
+            const networkErrorMessage = handleNetworkError(response);
+            if (networkErrorMessage) {
+                return networkErrorMessage;
+            } else {
+                const errorMessage = await generateErrorMessage(response, 'Authentication');
+                throw new Error(errorMessage);
+            }
         }
 
         const token = await response.text();
@@ -31,8 +38,14 @@ export async function authenticateUser(userName, password, apiUrl) {
 
         window.location.href = '/HealthCheck';
     } catch (error) {
-        console.error('Error:', error);
-        return error.message;
+        const networkErrorMessage = handleNetworkError(error);
+        if (networkErrorMessage) {
+            console.error(networkErrorMessage);
+            return networkErrorMessage;
+        } else {
+            console.error(error);
+            return error;
+        }
     }
 }
 
@@ -42,7 +55,13 @@ export function handleSignOut() {
         localStorage.removeItem('expiration');
         window.location.href = '/';
     } catch (error) {
-        console.error('Error while signing out:', error);
+        const errorMessage = handleNetworkError(error);
+        if (errorMessage) {
+            console.error('Error while signing out:', errorMessage);
+        } else {
+            console.error('Error while signing out:', error);
+        }
+        return error;
     }
 }
 

@@ -39,8 +39,8 @@ export default function AirlineEditForm() {
         const edit = await editData(airline, 'Airlines', id, dataCtx.apiUrl, navigate);
 
         if (edit) {
-            console.error('Error creating airline:', edit);
-            setFormData({ ...formData, error: edit });
+            console.error('Error creating airline:', edit.message);
+            setFormData({ ...formData, error: edit.message });
         } else {
             setFormData({ name: '', error: null, isPending: false });
         }
@@ -48,7 +48,7 @@ export default function AirlineEditForm() {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormData(prevState => ({ ...prevState, [name]: value })); // Update the specific field in formData state
+        setFormData(prevState => ({ ...prevState, [name]: value }));
     };
 
     return (

@@ -1,4 +1,5 @@
 import { getAuthToken } from '../util/auth.js';
+import { generateErrorMessage, handleNetworkError } from '../util/errorUtils.js';
 
 export async function createData(data, dataType, apiUrl, navigate) {
     try {
@@ -19,17 +20,17 @@ export async function createData(data, dataType, apiUrl, navigate) {
         if (response.ok) {
             const responseData = await response.json();
             navigate(`/${dataType}/${responseData.id}`);
-        } else if (response.status === 400) {
-            throw new Error('Bad request: The server cannot process the request due to a client error.');
-        } else if (response.status === 401) {
-            throw new Error('Unauthorized: Authentication is required and has failed or has not yet been provided.');
-        } else if (response.status === 403) {
-            throw new Error('Forbidden: The server understood the request but refuses to authorize it.');
         } else {
-            throw new Error(`Failed to create ${dataType}: Server returned status ${response.status}.`);
+            const errorMessage = await generateErrorMessage(response, dataType);
+            throw new Error(errorMessage);
         }
     } catch (error) {
-        console.error('Error creating data:', error);
-        return error.message;
+        const networkErrorMessage = handleNetworkError(error);
+        if (networkErrorMessage) {
+            return networkErrorMessage;
+        } else {
+            console.error('Error creating data:', error);
+        }
+        return error;
     }
 }

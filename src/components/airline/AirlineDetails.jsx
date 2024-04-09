@@ -18,7 +18,6 @@ export default function AirlineDetails() {
     const { data: airline, dataExist, error, isLoading } = useFetch(DATA_TYPE, id);
     const navigate = useNavigate();
 
-    // Consolidating state variables into a single object
     const [operationState, setOperationState] = useState({
         operationError: null,
         isPending: false
@@ -26,7 +25,7 @@ export default function AirlineDetails() {
 
     const handleOperation = async (operation) => {
         try {
-            setOperationState({ ...operationState, isPending: true });
+            setOperationState(prevState => ({ ...prevState, isPending: true }));
             let operationResult;
 
             if (operation === 'edit') {
@@ -34,16 +33,13 @@ export default function AirlineDetails() {
             } else if (operation === 'delete') {
                 operationResult = await deleteData(DATA_TYPE, id, dataCtx.apiUrl, navigate);
             }
-
             if (operationResult) {
-                console.error(`Error ${operation}ing airline:`, operationResult);
-                setOperationState({ ...operationState, operationError: operationResult });
+                setOperationState(prevState => ({ ...prevState, operationError: operationResult.message }));
             }
-        } catch (operationError) {
-            console.error(`Error ${operation}ing airline:`, operationError);
-            setOperationState({ ...operationState, operationError: operationError.message });
+        } catch (error) {
+            setOperationState(prevState => ({ ...prevState, operationError: error.message }));
         } finally {
-            setOperationState({ ...operationState, isPending: false });
+            setOperationState(prevState => ({ ...prevState, isPending: false }));
         }
     };
 
@@ -51,7 +47,7 @@ export default function AirlineDetails() {
         <>
             <PageTitle title='Airline Details' />
             {(isLoading || operationState.isPending) && <LoadingSpinner />}
-            {error && <Alert alertType="error" alertText={error} />}
+            {error && <Alert alertType="error" alertText={error.message} />}
             {operationState.operationError && <Alert alertType="error" alertText={operationState.operationError} />}
             {dataExist && (
                 <>
