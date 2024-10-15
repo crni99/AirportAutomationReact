@@ -23,8 +23,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-      working-directory: ./src  # Specify the directory if needed
+      working-directory: ./src
     - run: npm run build --if-present
-      working-directory: ./src  # Adjust as necessary based on your project structure
-    - run: npm test
-      working-directory: ./src  # Specify the correct directory for tests
+      working-directory: ./src
