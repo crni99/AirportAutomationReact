@@ -4,82 +4,100 @@ import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 import { editData } from '../../utils/edit.js';
 import PageTitle from '../common/PageTitle.jsx';
-import LoadingSpinner from '../common/LoadingSpinner';
+import LoadingSpinner from '../common/LoadingSpinner.jsx';
 import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import useFetch from '../../hooks/useFetch.jsx';
 import { validateField } from '../../utils/validation.js';
 
-export default function AirlineEditForm() {
+export default function DestinationEditForm() {
     const dataCtx = useContext(DataContext);
     const { id } = useParams();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        name: '',
+        city: '',
+        airport: '',
         error: null,
         isPending: false,
     });
 
-    const { data: airlineData, fetchError, isLoading, isError } = useFetch('Airlines', id);
+    const { data: destinationData, fetchError, isLoading, isError } = useFetch('Destinations', id);
 
     useEffect(() => {
-        if (airlineData) {
-            setFormData((prevState) => ({ ...prevState, name: airlineData.name || '' }));
+        if (destinationData) {
+            setFormData((prevState) => ({ ...prevState, city: destinationData.city || '', airport: destinationData.airport || '' }));
         }
-    }, [airlineData]);
+    }, [destinationData]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const errorMessage = validateField('Airline', 'name', formData.name);
-        if (errorMessage) {
-            setFormData({ ...formData, error: errorMessage });
+        const cityError = validateField('Destination', 'city', formData.city);
+        const airportError = validateField('Destination', 'airport', formData.airport);
+        if (cityError || airportError) {
+            setFormData({
+                ...formData,
+                error: cityError || airportError,
+            });
             return;
         }
 
-        const airline = {
+        const destination = {
             Id: id,
-            Name: formData.name,
+            City: formData.city,
+            Airport: formData.airport
         };
 
         setFormData((prevState) => ({ ...prevState, isPending: true }));
 
         try {
-            const edit = await editData(airline, 'Airlines', id, dataCtx.apiUrl, navigate);
+            const edit = await editData(destination, 'Destinations', id, dataCtx.apiUrl, navigate);
 
             if (edit) {
-                console.error('Error updating airline:', edit.message);
+                console.error('Error updating destination:', edit.message);
                 setFormData({ ...formData, error: edit.message, isPending: false });
             } else {
                 setFormData({ name: '', error: null, isPending: false });
             }
         } catch (err) {
             console.error('Error during API call:', err);
-            setFormData({ ...formData, error: 'Failed to update airline. Please try again.', isPending: false });
+            setFormData({ ...formData, error: 'Failed to update destination. Please try again.', isPending: false });
         }
     };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        const errorMessage = validateField('Airline', name, value);
+        const errorMessage = validateField('Destination', name, value);
         setFormData((prevState) => ({ ...prevState, [name]: value, error: errorMessage }));
     };
 
     return (
         <>
-            <PageTitle title='Edit Airline' />
+            <PageTitle title='Edit Destination' />
             <div className="col-md-4">
                 {formData.isPending && <LoadingSpinner />}
                 <form onSubmit={handleSubmit}>
-                    <div className="form-group pb-4">
-                        <label htmlFor="name" className="control-label">Name</label>
+                    <div className="form-group pb-3">
+                        <label htmlFor="city" className="control-label">City</label>
                         <input
-                            id="name"
+                            id="city"
                             type="text"
                             className="form-control"
-                            name="name"
-                            value={formData.name}
+                            name="city"
+                            value={formData.city}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group pb-4">
+                        <label htmlFor="airport" className="control-label">Airport</label>
+                        <input
+                            id="airport"
+                            type="text"
+                            className="form-control"
+                            name="airport"
+                            value={formData.airport}
                             onChange={handleChange}
                             required
                         />
@@ -96,7 +114,7 @@ export default function AirlineEditForm() {
             </div>
             <nav aria-label="Page navigation">
                 <ul className="pagination pagination-container pagination-container-absolute">
-                    <BackToListAction dataType="Airlines" />
+                    <BackToListAction dataType="Destinations" />
                 </ul>
             </nav>
         </>

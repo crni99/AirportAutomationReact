@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
-import { deleteData } from '../../util/delete';
-import { editData } from '../../util/edit.js';
+import { deleteData } from '../../utils/delete';
+import { editData } from '../../utils/edit.js';
 import PageTitle from '../common/PageTitle.jsx';
 import LoadingSpinner from '../common/LoadingSpinner';
 import PageNavigationActions from '../common/pagination/PageNavigationActions';

@@ -10,12 +10,12 @@ import Alert from '../common/Alert.jsx';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 
-const DATA_TYPE = "Pilots";
+const DATA_TYPE = "Destinations";
 
-export default function PilotDetails() {
+export default function DestinationDetails() {
     const dataCtx = useContext(DataContext);
     const { id } = useParams();
-    const { data: pilot, dataExist, error, isLoading } = useFetch(DATA_TYPE, id);
+    const { data: destination, dataExist, error, isLoading } = useFetch(DATA_TYPE, id);
     const navigate = useNavigate();
 
     const [operationState, setOperationState] = useState({
@@ -45,7 +45,7 @@ export default function PilotDetails() {
 
     return (
         <>
-            <PageTitle title='Pilot Details' />
+            <PageTitle title='Destination Details' />
             {(isLoading || operationState.isPending) && <LoadingSpinner />}
             {error && <Alert alertType="error" alertText={error.message} />}
             {operationState.operationError && <Alert alertType="error" alertText={operationState.operationError} />}
@@ -55,15 +55,11 @@ export default function PilotDetails() {
                         <br />
                         <dl className="row">
                             <dt className="col-sm-2">Id</dt>
-                            <dd className="col-sm-10">{pilot.id}</dd>
-                            <dt className="col-sm-2">First Name</dt>
-                            <dd className="col-sm-10">{pilot.firstName}</dd>
-                            <dt className="col-sm-2">Last Name</dt>
-                            <dd className="col-sm-10">{pilot.lastName}</dd>
-                            <dt className="col-sm-2">UPRN</dt>
-                            <dd className="col-sm-10">{pilot.uprn}</dd>
-                            <dt className="col-sm-2">Flying Hours</dt>
-                            <dd className="col-sm-10">{pilot.flyingHours}</dd>
+                            <dd className="col-sm-10">{destination.id}</dd>
+                            <dt className="col-sm-2">City</dt>
+                            <dd className="col-sm-10">{destination.city}</dd>
+                            <dt className="col-sm-2">Airport</dt>
+                            <dd className="col-sm-10">{destination.airport}</dd>
                         </dl>
                     </div>
                     <PageNavigationActions dataType={DATA_TYPE} dataId={id} onEdit={() => handleOperation('edit')}

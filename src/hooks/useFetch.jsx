@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { getAuthToken } from '../util/auth.js';
+import { useState, useEffect, useCallback  } from 'react';
+import { getAuthToken } from '../utils/auth.js';
 import { useContext } from 'react';
 import { DataContext } from '../store/data-context.jsx';
-import { generateErrorMessage, handleNetworkError } from '../util/errorUtils.js';
+import { generateErrorMessage, handleNetworkError } from '../utils/errorUtils.js';
 
 export default function useFetch(dataType, dataId, page = 1) {
     const dataCtx = useContext(DataContext);
@@ -12,6 +12,25 @@ export default function useFetch(dataType, dataId, page = 1) {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
+
+    const handleResponse = useCallback(async (response) => {
+        try {
+            if (response.ok) {
+                if (response.status === 204) {
+                    setData([]);
+                    setDataExist(false);
+                } else {
+                    const responseData = await response.json();
+                    setData(responseData);
+                    setDataExist(true);
+                }
+            } else {
+                throw new Error(await generateErrorMessage(response, dataType, dataId));
+            }
+        } catch (error) {
+            handleFetchError(error);
+        }
+    }, [dataType, dataId]);
 
     useEffect(() => {
         async function fetchData() {
@@ -30,10 +49,10 @@ export default function useFetch(dataType, dataId, page = 1) {
         }
 
         fetchData();
-    }, [dataType, dataId, page, dataCtx]);
+    }, [dataType, dataId, page, dataCtx, handleResponse]);
 
     function buildUrl(apiUrl, dataType, dataId, page, pageSize) {
-        let url = apiUrl + '/' + dataType;
+        let url = `${apiUrl}/${dataType}`;
         if (dataId !== null) {
             url += `/${dataId}`;
         } else {
@@ -49,25 +68,6 @@ export default function useFetch(dataType, dataId, page = 1) {
             headers['Authorization'] = `Bearer ${authToken}`;
         }
         return headers;
-    }
-
-    async function handleResponse(response) {
-        try {
-            if (response.ok) {
-                if (response.status === 204) {
-                    setData([]);
-                    setDataExist(false);
-                } else {
-                    const responseData = await response.json();
-                    setData(responseData);
-                    setDataExist(true);
-                }
-            } else {
-                throw new Error(await generateErrorMessage(response, dataType, dataId));
-            }
-        } catch (error) {
-            handleFetchError(error);
-        }
     }
 
     function handleFetchError(error) {

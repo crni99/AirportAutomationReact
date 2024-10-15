@@ -4,7 +4,7 @@ export function Pagination({ pageNumber, lastPage, onPageChange }) {
     return (
         <div>
             <nav aria-label="Page navigation">
-                <ul className="pagination pagination-container">
+                <ul className="pagination pagination-container pagination-container-absolute">
                     <li className={`page-item ${pageNumber === 1 ? "disabled" : ""}`}>
                         <button className="page-link" onClick={() => onPageChange(1)}>First Page</button>
                     </li>

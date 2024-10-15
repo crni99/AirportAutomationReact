@@ -1,5 +1,11 @@
-import { getAuthToken } from '../util/auth.js';
-import { generateErrorMessage, handleNetworkError } from '../util/errorUtils.js';
+import { getAuthToken } from '../utils/auth.js';
+import { generateErrorMessage, handleNetworkError } from '../utils/errorUtils.js';
+
+/*
+Input Validation: 
+Ensure proper validation of input parameters (dataType, dataId, and data) \
+before constructing the request URL and body to prevent potential security vulnerabilities or data corruption.
+*/
 
 export async function editData(data, dataType, dataId, apiUrl, navigate) {
     try {

@@ -1,0 +1,37 @@
+import React, { useState, useEffect } from "react";
+import useFetch from '../../hooks/useFetch';
+import LoadingSpinner from '../common/LoadingSpinner';
+import Alert from '../common/Alert';
+import PageTitle from "../common/PageTitle";
+import TravelClassesListTable from "./TravelClassesListTable";
+
+export default function TravelClassesList() {
+    const [travelClasses, settravelClasses] = useState([]);
+    const { data, error, isLoading, isError } = useFetch('TravelClasses', null, 1);
+
+    useEffect(() => {
+        if (data) {
+            settravelClasses(data.data);
+        }
+    }, [data]);
+
+    return (
+        <>
+            <PageTitle title={'Travel Classes'} />
+            <br />
+            {isLoading && <LoadingSpinner />}
+            {isError && error && <Alert alertType="error" alertText={error.message} />}
+            {!isError && !isLoading && (
+                <div className="form-horizontal">
+                    <div className="form-group">
+                        {travelClasses && travelClasses.length > 0 ? (
+                            <TravelClassesListTable travelClasses={travelClasses} />
+                        ) : (
+                            <Alert alertType="info" alertText="No travel classes available" />
+                        )}
+                    </div>
+                </div>
+            )}
+        </>
+    );
+}

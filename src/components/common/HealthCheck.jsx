@@ -2,6 +2,7 @@ import React from 'react';
 import useFetch from "../../hooks/useFetch";
 import Alert from '../common/Alert';
 
+// Not working properly if there isn't connection with the API
 export default function HealthCheck() {
     const { data, error, isLoading, isError } = useFetch('HealthCheck', null);
 

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { DataContext } from '../../store/data-context';
-import { getAuthToken, authenticateUser } from '../../util/auth';
+import { getAuthToken, authenticateUser } from '../../utils/auth';
 import Alert from '../common/Alert';
+import { setupThemeToggle } from '../../utils/themeToggle';
 
+// Add loader when trying to login
 export default function Home() {
     const dataCtx = useContext(DataContext);
     const isLoggedIn = getAuthToken() !== null;
@@ -27,6 +28,15 @@ export default function Home() {
         }
     };
 
+    useEffect(() => {
+        const cleanupToggle = setupThemeToggle('darkModeToggle');
+
+        return () => {
+            if (cleanupToggle) {
+                cleanupToggle();
+            }
+        };
+    }, []);
 
     return (
         <div className="container">
