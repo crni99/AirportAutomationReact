@@ -1,3 +1,5 @@
+import openMap from '../../utils/openMapHelper';
+
 export default function PassengersListTable( {passengers }) {
     return (
         <div>
@@ -22,7 +24,10 @@ export default function PassengersListTable( {passengers }) {
                             <td>{passenger.lastName}</td>
                             <td>{passenger.uprn}</td>
                             <td>{passenger.passport}</td>
-                            <td>{passenger.address}</td>
+                            <td className="clickable-row link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                onClick={() => openMap(passenger.address)}>
+                                {passenger.address}
+                            </td>
                             <td>{passenger.phone}</td>
                         </tr>
                     ))}

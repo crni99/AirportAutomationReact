@@ -11,6 +11,7 @@ import HealthCheck from './components/common/HealthCheck';
 import Footer from './components/common/Footer';
 import { DataContext } from './store/data-context';
 import { getAuthToken, getRole } from './utils/auth';
+import Unauthorized from './components/common/Unauthorized';
 
 /*
 Optimization: 
@@ -31,6 +32,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/HealthCheck" element={<HealthCheck />} />
+            <Route path='/unauthorized' element={<Unauthorized />} />
 
             {AirlineRoutes}
             {DestinationsRoutes}

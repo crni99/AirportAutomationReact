@@ -9,6 +9,7 @@ import PageNavigationActions from '../common/pagination/PageNavigationActions.js
 import Alert from '../common/Alert.jsx';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
+import openMap from '../../utils/openMapHelper.js'
 
 const DATA_TYPE = "Destinations";
 
@@ -57,9 +58,15 @@ export default function DestinationDetails() {
                             <dt className="col-sm-2">Id</dt>
                             <dd className="col-sm-10">{destination.id}</dd>
                             <dt className="col-sm-2">City</dt>
-                            <dd className="col-sm-10">{destination.city}</dd>
+                            <dd className="col-sm-10 clickable-row link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
+                                onClick={() => openMap(destination.city)}>
+                                    {destination.city}
+                            </dd>
                             <dt className="col-sm-2">Airport</dt>
-                            <dd className="col-sm-10">{destination.airport}</dd>
+                            <dd className="col-sm-10 clickable-row link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
+                                onClick={() => openMap(destination.airport)}>
+                                    {destination.airport}
+                            </dd>
                         </dl>
                     </div>
                     <PageNavigationActions dataType={DATA_TYPE} dataId={id} onEdit={() => handleOperation('edit')}
