@@ -58,12 +58,12 @@ export default function DestinationDetails() {
                             <dt className="col-sm-2">Id</dt>
                             <dd className="col-sm-10">{destination.id}</dd>
                             <dt className="col-sm-2">City</dt>
-                            <dd className="col-sm-10 clickable-row link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
+                            <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
                                 onClick={() => openMap(destination.city)}>
                                     {destination.city}
                             </dd>
                             <dt className="col-sm-2">Airport</dt>
-                            <dd className="col-sm-10 clickable-row link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
+                            <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
                                 onClick={() => openMap(destination.airport)}>
                                     {destination.airport}
                             </dd>

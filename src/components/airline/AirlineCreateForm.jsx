@@ -6,7 +6,7 @@ import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
-import { validateField } from '../../utils/validation.js';
+import { validateFields } from '../../utils/validation/validateFields.js';
 
 export default function AirlineCreateForm() {
     const dataCtx = useContext(DataContext);
@@ -20,9 +20,12 @@ export default function AirlineCreateForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const errorMessage = validateField('Airline', 'name', formData.name);
+        const errorMessage = validateFields('Airline', formData, ['name']);
         if (errorMessage) {
-            setFormData({ ...formData, error: errorMessage });
+            setFormData({
+                ...formData,
+                error: errorMessage,
+            });
             return;
         }
 
@@ -46,8 +49,10 @@ export default function AirlineCreateForm() {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        const errorMessage = validateField('Airline', 'name', value);
-        setFormData({ ...formData, [name]: value, error: errorMessage });
+        setFormData((prev) => {
+            const newError = validateFields('Airline', { ...prev, [name]: value }, ['name']);
+            return { ...prev, [name]: value, error: newError };
+        });
     };
 
     return (

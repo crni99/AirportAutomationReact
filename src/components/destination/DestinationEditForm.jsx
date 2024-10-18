@@ -8,7 +8,7 @@ import LoadingSpinner from '../common/LoadingSpinner.jsx';
 import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import useFetch from '../../hooks/useFetch.jsx';
-import { validateField } from '../../utils/validation.js';
+import { validateFields } from '../../utils/validation/validateFields.js';
 
 export default function DestinationEditForm() {
     const dataCtx = useContext(DataContext);
@@ -33,12 +33,11 @@ export default function DestinationEditForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const cityError = validateField('Destination', 'city', formData.city);
-        const airportError = validateField('Destination', 'airport', formData.airport);
-        if (cityError || airportError) {
+        const errorMessage = validateFields('Destination', formData, ['city', 'airport']);
+        if (errorMessage) {
             setFormData({
                 ...formData,
-                error: cityError || airportError,
+                error: errorMessage,
             });
             return;
         }
@@ -68,8 +67,10 @@ export default function DestinationEditForm() {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        const errorMessage = validateField('Destination', name, value);
-        setFormData((prevState) => ({ ...prevState, [name]: value, error: errorMessage }));
+        setFormData((prev) => {
+            const newError = validateFields('Destination', { ...prev, [name]: value }, ['city', 'airport']);
+            return { ...prev, [name]: value, error: newError };
+        });
     };
 
     return (

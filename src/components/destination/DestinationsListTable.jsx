@@ -16,11 +16,11 @@ export default function DestinationsListTable( {destinations }) {
                     {destinations.map(destination => (
                         <tr key={destination.id} className="clickable-row" onClick={() => window.open(`/Destinations/${destination.id}`, '_blank')}>
                             <td>{destination.id}</td>
-                            <td className="clickable-row link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                            <td className="clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                                 onClick={() => openMap(destination.airport)}>
                                 {destination.city}
                             </td>
-                            <td className="clickable-row link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                            <td className="clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                                 onClick={() => openMap(destination.airport)}>
                                 {destination.airport}
                             </td>

@@ -27,7 +27,7 @@ export default function AirlineList() {
 
     return (
         <>
-            <ListHeader dataExist={dataExist} dataType="Airlines" createButtonTitle="Create Airline" searchText="Search by Name:" />
+            <ListHeader dataExist={dataExist} dataType="Airlines" createButtonTitle="Create Airline" />
             <br />
             {isLoading && <LoadingSpinner />}
             {isError && error && <Alert alertType="error" alertText={error.message} />}

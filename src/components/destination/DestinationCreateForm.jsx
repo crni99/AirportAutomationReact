@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createData } from '../../utils/create.js';
 import PageTitle from '../common/PageTitle.jsx';
 import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
-import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
-import { validateField } from '../../utils/validation.js';
+import { validateFields } from '../../utils/validation/validateFields.js';
 
 export default function DestinationCreateForm() {
     const dataCtx = useContext(DataContext);
@@ -21,12 +20,11 @@ export default function DestinationCreateForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const cityError = validateField('Destination', 'city', formData.city);
-        const airportError = validateField('Destination', 'airport', formData.airport);
-        if (cityError || airportError) {
+        const errorMessage = validateFields('Destination', formData, ['city', 'airport']);
+        if (errorMessage) {
             setFormData({
                 ...formData,
-                error: cityError || airportError,
+                error: errorMessage,
             });
             return;
         }
@@ -41,7 +39,7 @@ export default function DestinationCreateForm() {
                 console.error('Error creating destination:', create.message);
                 setFormData({ ...formData, error: create.message, isPending: false });
             } else {
-                setFormData({ name: '', error: null, isPending: false });
+                setFormData({ city: '', airport: '', error: null, isPending: false });
             }
         } catch (err) {
             console.error('Error during API call:', err);
@@ -51,8 +49,10 @@ export default function DestinationCreateForm() {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        const errorMessage = validateField('Destination', 'name', value);
-        setFormData({ ...formData, [name]: value, error: errorMessage });
+        setFormData((prev) => {
+            const newError = validateFields('Destination', { ...prev, [name]: value }, ['city', 'airport']);
+            return { ...prev, [name]: value, error: newError };
+        });
     };
 
     return (

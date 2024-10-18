@@ -33,9 +33,9 @@ export default function HealthCheck() {
                             <br />
                             <dl className="row">
                                 <dt className="col-sm-3">Name</dt>
-                                <dd className="col-sm-3">Description</dd>
-                                <dd className="col-sm-3">Duration</dd>
-                                <dd className="col-sm-3">Status</dd>
+                                <dt className="col-sm-3">Description</dt>
+                                <dt className="col-sm-3">Duration</dt>
+                                <dt className="col-sm-3">Status</dt>
                             </dl>
                             <hr />
                             {Object.keys(data.entries).map((key, index) => (

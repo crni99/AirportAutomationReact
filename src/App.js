@@ -6,12 +6,13 @@ import TravelClassesRoutes from './routes/travelClassesRoutes';
 import PassengersRoutes from './routes/passengersRoutes';
 import PilotsRoutes from './routes/pilotsRoutes';
 import Home from './components/common/Home';
-import Header from './components/common/Header';
+import Header from './components/common/header/Header';
 import HealthCheck from './components/common/HealthCheck';
 import Footer from './components/common/Footer';
 import { DataContext } from './store/data-context';
-import { getAuthToken, getRole } from './utils/auth';
+import { getAuthToken } from './utils/auth';
 import Unauthorized from './components/common/Unauthorized';
+import ApiUsersRoutes from './routes/apiUserRoutes'; 
 
 /*
 Optimization: 
@@ -21,13 +22,12 @@ such as memoizing context values or using React's useMemo hook to prevent unnece
 
 function App() {
   const isLoggedIn = getAuthToken() !== null;
-  const isUser = getRole() !== null;
   const dataContext = useContext(DataContext);
 
   return (
     <DataContext.Provider value={dataContext}>
-      {isLoggedIn && <Header isUser={isUser} />}
-      <div className="container mt-4">
+      {isLoggedIn && <Header />}
+      <div className="container">
         <div className="row">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -39,6 +39,7 @@ function App() {
             {TravelClassesRoutes}
             {PassengersRoutes}
             {PilotsRoutes}
+            {ApiUsersRoutes}
 
           </Routes>
         </div>

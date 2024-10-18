@@ -1,7 +1,6 @@
 export default function TravelClassesListTable( {travelClasses }) {
     return (
         <div>
-            <hr />
             <table className="table table-responsive table-striped">
                 <thead>
                     <tr>

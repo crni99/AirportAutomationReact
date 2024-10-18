@@ -27,7 +27,7 @@ export default function PassengersList() {
 
     return (
         <>
-            <ListHeader dataExist={dataExist} dataType="Passengers" createButtonTitle="Create Passenger" searchText="Search by Name:" />
+            <ListHeader dataExist={dataExist} dataType="Passengers" createButtonTitle="Create Passenger" />
             <br />
             {isLoading && <LoadingSpinner />}
             {isError && error && <Alert alertType="error" alertText={error.message} />}

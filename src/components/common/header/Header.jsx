@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import { handleSignOut, getAuthToken } from "../../utils/auth";
-import { setupThemeToggle } from "../../utils/themeToggle";
+import { handleSignOut, getAuthToken, getRole } from "../../../utils/auth";
+import { setupThemeToggle } from "../../../utils/themeToggle";
+import NavItem from './NavItem';
 
-export default function Header({ isUser }) {
+export default function Header() {
 
     const isLoggedIn = getAuthToken() !== null;
+    const role = getRole();
 
     const handleSignOutClick = () => {
         handleSignOut();
@@ -30,36 +32,23 @@ export default function Header({ isUser }) {
                     </button>
                     <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul className="navbar-nav flex-grow-1">
-                            <li className="nav-item">
-                                <a className="nav-link" href="/Passengers">Passenger</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/TravelClasses">Travel Class</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/Destinations">Destination</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/Pilots">Pilot</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/Airlines">Airline</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/Flights">Flight</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/PlaneTickets">Plane Ticket</a>
-                            </li>
+                            <NavItem type='Passengers' text='Passenger' />
+                            <NavItem type='TravelClasses' text='Travel Class' />
+                            <NavItem type='Destinations' text='Destination' />
+                            <NavItem type='Pilots' text='Pilot' />
+                            <NavItem type='Airlines' text='Airline' />
+                            <NavItem type='Flights' text='Flight' />
+                            <NavItem type='PlaneTickets' text='Plane Ticket' />
+                            {role === 'SuperAdmin' && (
+                                <NavItem type='ApiUsers' text='Api User' />
+                            )}
                         </ul>
                         <ul className="navbar-nav">
                             <li className="nav-item">
                                 <button id="darkModeToggle" className="btn btn-secondary">Dark Mode</button>
                             </li>
                             {isLoggedIn && (
-                                <li className="nav-item">
-                                    <a className="nav-link" href="/HealthCheck">Status Check</a>
-                                </li>
+                                <NavItem type='HealthCheck' text='Status Check' />
                             )}
                             {isLoggedIn && (
                                 <li className="nav-item">

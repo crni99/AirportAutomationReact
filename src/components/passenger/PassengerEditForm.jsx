@@ -8,7 +8,7 @@ import LoadingSpinner from '../common/LoadingSpinner.jsx';
 import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import useFetch from '../../hooks/useFetch.jsx';
-import { validateField } from '../../utils/validation.js';
+import { validateFields } from '../../utils/validation/validateFields.js';
 
 export default function PassengerEditForm() {
     const dataCtx = useContext(DataContext);
@@ -44,16 +44,11 @@ export default function PassengerEditForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const fNameError = validateField('Passenger', 'firstName', formData.firstName);
-        const lNameError = validateField('Passenger', 'lastName', formData.lastName);
-        const uprnError = validateField('Passenger', 'uprn', formData.uprn);
-        const passportError = validateField('Passenger', 'passport', formData.passport);
-        const addressError = validateField('Passenger', 'address', formData.address);
-        const phoneError = validateField('Passenger', 'phone', formData.phone);
-        if (fNameError || lNameError || uprnError || passportError || addressError || phoneError) {
+        const errorMessage = validateFields('Passenger', formData, ['firstName', 'lastName', 'uprn', 'passport', 'address', 'phone']);
+        if (errorMessage) {
             setFormData({
                 ...formData,
-                error: fNameError || lNameError || uprnError || passportError || addressError || phoneError,
+                error: errorMessage,
             });
             return;
         }
@@ -87,8 +82,10 @@ export default function PassengerEditForm() {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        const errorMessage = validateField('Passenger', name, value);
-        setFormData((prevState) => ({ ...prevState, [name]: value, error: errorMessage }));
+        setFormData((prev) => {
+            const newError = validateFields('Passenger', { ...prev, [name]: value }, ['firstName', 'lastName', 'uprn', 'passport', 'address', 'phone']);
+            return { ...prev, [name]: value, error: newError };
+        });
     };
 
     return (

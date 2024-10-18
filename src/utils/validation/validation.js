@@ -116,6 +116,24 @@ export const validateField = (type, field, value) => {
                 }
             }
             break;
+        case 'ApiUser':
+            if (field === 'username') {
+                if (!value.trim()) {
+                    return "ApiUser username is required.";
+                }
+                if (value.length > 255) {
+                    return "ApiUser username cannot exceed 50 characters.";
+                }
+            }
+            if (field === 'password') {
+                if (!value.trim()) {
+                    return "ApiUser password is required.";
+                }
+                if (value.length > 255) {
+                    return "ApiUser password cannot exceed 50 characters.";
+                }
+            }
+            break;
         default:
             return null;
     }

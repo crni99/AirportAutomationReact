@@ -4,35 +4,41 @@ import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 import { editData } from '../../utils/edit.js';
 import PageTitle from '../common/PageTitle.jsx';
-import LoadingSpinner from '../common/LoadingSpinner';
+import LoadingSpinner from '../common/LoadingSpinner.jsx';
 import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import useFetch from '../../hooks/useFetch.jsx';
 import { validateFields } from '../../utils/validation/validateFields.js';
 
-export default function AirlineEditForm() {
+export default function ApiUserEditForm() {
     const dataCtx = useContext(DataContext);
     const { id } = useParams();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        name: '',
+        username: '',
+        password: '',
+        roles: '',
         error: null,
         isPending: false,
     });
 
-    const { data: airlineData, fetchError, isLoading, isError } = useFetch('Airlines', id);
+    const { data: apiUserData, fetchError, isLoading, isError } = useFetch('ApiUsers', id);
 
     useEffect(() => {
-        if (airlineData) {
-            setFormData((prevState) => ({ ...prevState, name: airlineData.name || '' }));
+        if (apiUserData) {
+            setFormData((prevState) => ({ ...prevState, 
+                username: apiUserData.username || '',
+                password: apiUserData.password || '',
+                roles: apiUserData.roles || ''
+            }));
         }
-    }, [airlineData]);
+    }, [apiUserData]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const errorMessage = validateFields('Airline', formData, ['name']);
+        const errorMessage = validateFields('ApiUser', formData, ['username', 'password', 'roles']);
         if (errorMessage) {
             setFormData({
                 ...formData,
@@ -41,50 +47,76 @@ export default function AirlineEditForm() {
             return;
         }
 
-        const airline = {
+        const apiUser = {
             Id: id,
-            Name: formData.name,
+            UserName: formData.username,
+            Password: formData.password,
+            Roles: formData.roles
         };
 
         setFormData((prevState) => ({ ...prevState, isPending: true }));
 
         try {
-            const edit = await editData(airline, 'Airlines', id, dataCtx.apiUrl, navigate);
+            const edit = await editData(apiUser, 'ApiUsers', id, dataCtx.apiUrl, navigate);
 
             if (edit) {
-                console.error('Error updating airline:', edit.message);
+                console.error('Error updating api user:', edit.message);
                 setFormData({ ...formData, error: edit.message, isPending: false });
             } else {
                 setFormData({ name: '', error: null, isPending: false });
             }
         } catch (err) {
             console.error('Error during API call:', err);
-            setFormData({ ...formData, error: 'Failed to update airline. Please try again.', isPending: false });
+            setFormData({ ...formData, error: 'Failed to update api user. Please try again.', isPending: false });
         }
     };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prev) => {
-            const newError = validateFields('Airline', { ...prev, [name]: value }, ['name']);
+            const newError = validateFields('ApiUser', { ...prev, [name]: value }, ['username', 'password', 'roles']);
             return { ...prev, [name]: value, error: newError };
         });
     };
 
     return (
         <>
-            <PageTitle title='Edit Airline' />
+            <PageTitle title='Edit Api User' />
             <div className="col-md-4">
                 {formData.isPending && <LoadingSpinner />}
                 <form onSubmit={handleSubmit}>
                     <div className="form-group pb-4">
-                        <label htmlFor="name" className="control-label">Name</label>
+                        <label htmlFor="username" className="control-label">Username</label>
                         <input
-                            id="name"
+                            id="username"
                             type="text"
                             className="form-control"
-                            name="name"
-                            value={formData.name}
+                            name="username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group pb-4">
+                        <label htmlFor="password" className="control-label">Password</label>
+                        <input
+                            id="password"
+                            type="text"
+                            className="form-control"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group pb-4">
+                        <label htmlFor="roles" className="control-label">Roles</label>
+                        <input
+                            id="roles"
+                            type="text"
+                            className="form-control"
+                            name="roles"
+                            value={formData.roles}
                             onChange={handleChange}
                             required
                         />
@@ -101,7 +133,7 @@ export default function AirlineEditForm() {
             </div>
             <nav aria-label="Page navigation">
                 <ul className="pagination pagination-container pagination-container-absolute">
-                    <BackToListAction dataType="Airlines" />
+                    <BackToListAction dataType="ApiUsers" />
                 </ul>
             </nav>
         </>

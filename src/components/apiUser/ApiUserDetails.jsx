@@ -9,14 +9,13 @@ import PageNavigationActions from '../common/pagination/PageNavigationActions.js
 import Alert from '../common/Alert.jsx';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
-import openMap from '../../utils/openMapHelper.js';
 
-const DATA_TYPE = "Passengers";
+const DATA_TYPE = "ApiUsers";
 
-export default function PassengerDetails() {
+export default function ApiUserDetails() {
     const dataCtx = useContext(DataContext);
     const { id } = useParams();
-    const { data: passenger, dataExist, error, isLoading } = useFetch(DATA_TYPE, id);
+    const { data: apiUser, dataExist, error, isLoading } = useFetch(DATA_TYPE, id);
     const navigate = useNavigate();
 
     const [operationState, setOperationState] = useState({
@@ -46,7 +45,7 @@ export default function PassengerDetails() {
 
     return (
         <>
-            <PageTitle title='Passenger Details' />
+            <PageTitle title='Api User Details' />
             {(isLoading || operationState.isPending) && <LoadingSpinner />}
             {error && <Alert alertType="error" alertText={error.message} />}
             {operationState.operationError && <Alert alertType="error" alertText={operationState.operationError} />}
@@ -56,22 +55,13 @@ export default function PassengerDetails() {
                         <br />
                         <dl className="row">
                             <dt className="col-sm-2">Id</dt>
-                            <dd className="col-sm-10">{passenger.id}</dd>
-                            <dt className="col-sm-2">First Name</dt>
-                            <dd className="col-sm-10">{passenger.firstName}</dd>
-                            <dt className="col-sm-2">Last Name</dt>
-                            <dd className="col-sm-10">{passenger.lastName}</dd>
-                            <dt className="col-sm-2">UPRN</dt>
-                            <dd className="col-sm-10">{passenger.uprn}</dd>
-                            <dt className="col-sm-2">Passport</dt>
-                            <dd className="col-sm-10">{passenger.passport}</dd>
-                            <dt className="col-sm-2">Address</dt>
-                            <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
-                                onClick={() => openMap(passenger.address)}>
-                                    {passenger.address}
-                            </dd>
-                            <dt className="col-sm-2">Phone</dt>
-                            <dd className="col-sm-10">{passenger.phone}</dd>
+                            <dd className="col-sm-10">{apiUser.apiUserId}</dd>
+                            <dt className="col-sm-2">Username</dt>
+                            <dd className="col-sm-10">{apiUser.userName}</dd>
+                            <dt className="col-sm-2">Password</dt>
+                            <dd className="col-sm-10">{apiUser.password}</dd>
+                            <dt className="col-sm-2">Roles</dt>
+                            <dd className="col-sm-10">{apiUser.roles}</dd>
                         </dl>
                     </div>
                     <PageNavigationActions dataType={DATA_TYPE} dataId={id} onEdit={() => handleOperation('edit')}

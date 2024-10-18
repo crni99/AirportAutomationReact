@@ -3,19 +3,19 @@ import useFetch from '../../hooks/useFetch';
 import { Pagination } from '../common/pagination/Pagination';
 import LoadingSpinner from '../common/LoadingSpinner';
 import Alert from '../common/Alert';
-import ListHeader from "../common/ListHeader";
-import PilotsListTable from "./PilotsListTable";
+import ApiUsersListTable from "./ApiUsersListTable";
+import PageTitle from '../common/PageTitle';
 
 // Make search working
-export default function PilotsList() {
+export default function ApiUsersList() {
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [pilots, setPilots] = useState([]);
-    const { data, dataExist, error, isLoading, isError } = useFetch('Pilots', null, pageNumber);
+    const [apiUsers, setApiUsers] = useState([]);
+    const { data, error, isLoading, isError } = useFetch('ApiUsers', null, pageNumber);
 
     useEffect(() => {
         if (data) {
-            setPilots(data.data);
+            setApiUsers(data.data);
             setPageNumber(data.pageNumber);
             setTotalPages(data.totalPages);
         }
@@ -27,17 +27,17 @@ export default function PilotsList() {
 
     return (
         <>
-            <ListHeader dataExist={dataExist} dataType="Pilots" createButtonTitle="Create Pilot" />
+            <PageTitle title='Api Users' />
             <br />
             {isLoading && <LoadingSpinner />}
             {isError && error && <Alert alertType="error" alertText={error.message} />}
             {!isError && !isLoading && (
                 <div className="form-horizontal">
                     <div className="form-group">
-                        {pilots && pilots.length > 0 ? (
-                            <PilotsListTable pilots={pilots} />
+                        {apiUsers && apiUsers.length > 0 ? (
+                            <ApiUsersListTable apiUsers={apiUsers} />
                         ) : (
-                            <Alert alertType="info" alertText="No pilots available" />
+                            <Alert alertType="info" alertText="No api users available" />
                         )}
                         <div>
                             <Pagination pageNumber={pageNumber} lastPage={totalPages} onPageChange={handlePageChange} />

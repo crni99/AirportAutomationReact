@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import useFetch from '../../hooks/useFetch';
 import LoadingSpinner from '../common/LoadingSpinner';
 import Alert from '../common/Alert';
-import PageTitle from "../common/PageTitle";
 import TravelClassesListTable from "./TravelClassesListTable";
 
 export default function TravelClassesList() {
@@ -17,7 +16,6 @@ export default function TravelClassesList() {
 
     return (
         <>
-            <PageTitle title={'Travel Classes'} />
             <br />
             {isLoading && <LoadingSpinner />}
             {isError && error && <Alert alertType="error" alertText={error.message} />}

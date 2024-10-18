@@ -6,7 +6,7 @@ import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
-import { validateField } from '../../utils/validation.js';
+import { validateFields } from '../../utils/validation/validateFields.js';
 
 export default function PilotCreateForm() {
     const dataCtx = useContext(DataContext);
@@ -23,14 +23,11 @@ export default function PilotCreateForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const fNameError = validateField('Pilot', 'firstName', formData.firstName);
-        const lNameError = validateField('Pilot', 'lastName', formData.lastName);
-        const uprnError = validateField('Pilot', 'uprn', formData.uprn);
-        const flyingHoursError = validateField('Pilot', 'flyingHours', formData.flyingHours);
-        if (fNameError || lNameError || uprnError || flyingHoursError) {
+        const errorMessage = validateFields('Pilot', formData, ['firstName', 'lastName', 'uprn', 'flyingHours']);
+        if (errorMessage) {
             setFormData({
                 ...formData,
-                error: fNameError || lNameError || uprnError || flyingHoursError,
+                error: errorMessage,
             });
             return;
         }
@@ -60,8 +57,10 @@ export default function PilotCreateForm() {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        const errorMessage = validateField('Pilot', 'name', value);
-        setFormData({ ...formData, [name]: value, error: errorMessage });
+        setFormData((prev) => {
+            const newError = validateFields('{Pilot}', { ...prev, [name]: value }, ['firstName', 'lastName', 'uprn', 'flyingHours']);
+            return { ...prev, [name]: value, error: newError };
+        });
     };
 
     return (
