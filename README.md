@@ -1,4 +1,4 @@
-## Airport Automation React App
+## Airport Automation React App [![Node.js CI](https://github.com/crni99/AirportAutomationReact/actions/workflows/node.js.yml/badge.svg)](https://github.com/crni99/AirportAutomationReact/actions/workflows/node.js.yml)
 In this project, I have developed a comprehensive React application that interfaces seamlessly with the Airport Automation API. This app aims to provide users with an intuitive and efficient experience. Below are the key components and practices incorporated into the application:
 
 ### User Interface Design:
