@@ -14,7 +14,7 @@ export default function PageNavigationActions({ dataType, dataId, onEdit, onDele
         <div>
             {isUser !== 'User' && (
                 <nav aria-label="Page navigation">
-                    <ul className="pagination pagination-container pagination-container-absolute">
+                    <ul className="pagination pagination-container">
                         <EditAction dataType={dataType} dataId={dataId} onEdit={onEdit} />
                         <DeleteAction dataType={dataType} dataId={dataId} onDelete={onDelete} />
                         <BackToListAction dataType={dataType} />

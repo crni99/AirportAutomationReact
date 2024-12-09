@@ -89,7 +89,7 @@ export default function AirlineEditForm() {
                             required
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group pb-3">
                         <button type="submit" className="btn btn-success" disabled={formData.isPending}>
                             {formData.isPending ? 'Submitting...' : 'Save Changes'}
                         </button>

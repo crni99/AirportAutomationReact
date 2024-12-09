@@ -122,7 +122,7 @@ export default function PilotCreateForm() {
                             max="40000"
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group pb-3">
                         <button type="submit" className="btn btn-success" disabled={formData.isPending}>
                             {formData.isPending ? 'Creating...' : 'Create'}
                         </button>

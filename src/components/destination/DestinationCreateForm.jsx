@@ -86,7 +86,7 @@ export default function DestinationCreateForm() {
                             required
                         />
                     </div>
-                    <div className="form-group">
+                    <div className="form-group pb-3">
                         <button type="submit" className="btn btn-success" disabled={formData.isPending}>
                             {formData.isPending ? 'Creating...' : 'Create'}
                         </button>

@@ -39,9 +39,9 @@ export default function AirlineList() {
                         ) : (
                             <Alert alertType="info" alertText="No airlines available" />
                         )}
-                        <div>
-                            <Pagination pageNumber={pageNumber} lastPage={totalPages} onPageChange={handlePageChange} />
-                        </div>
+                    </div>
+                    <div>
+                        <Pagination pageNumber={pageNumber} lastPage={totalPages} onPageChange={handlePageChange} />
                     </div>
                 </div>
             )}

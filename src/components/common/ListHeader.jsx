@@ -8,17 +8,19 @@ export default function ListHeader({ dataExist, dataType, createButtonTitle }) {
     const isUser = getRole();
 
     return (
-        <div className="container mt-5">
+        <div className="container container-spacing-top">
             <div className="row justify-content-between">
-                <div className="col-md-6">
-                    {isUser !== 'User' && (
-                        <div className="d-flex justify-content-start mb-3">
+                <div className="col-md-12">
+                    <div className="d-flex justify-content-between align-items-center" style={{ width: '100%' }}>
+                        {isUser !== 'User' && (
                             <CreateButton destination={`/${dataType}/Create`} title={createButtonTitle} />
-                        </div>
-                    )}
-                    {dataExist && (
-                        <SearchInputWithButton type={dataType} />
-                    )}
+                        )}
+                        {dataExist && (
+                            <div className="d-flex">
+                                <SearchInputWithButton type={dataType} />
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
