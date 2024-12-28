@@ -3,10 +3,11 @@ import useFetch from '../../hooks/useFetch';
 import LoadingSpinner from '../common/LoadingSpinner';
 import Alert from '../common/Alert';
 import TravelClassesListTable from "./TravelClassesListTable";
+import { Entities } from '../../utils/const.js';
 
 export default function TravelClassesList() {
     const [travelClasses, settravelClasses] = useState([]);
-    const { data, error, isLoading, isError } = useFetch('TravelClasses', null, 1);
+    const { data, error, isLoading, isError } = useFetch(Entities.TRAVEL_CLASSES, null, 1);
 
     useEffect(() => {
         if (data) {

@@ -7,6 +7,7 @@ import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 import { validateFields } from '../../utils/validation/validateFields.js';
+import { Entities } from '../../utils/const.js';
 
 export default function AirlineCreateForm() {
     const dataCtx = useContext(DataContext);
@@ -20,7 +21,7 @@ export default function AirlineCreateForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const errorMessage = validateFields('Airline', formData, ['name']);
+        const errorMessage = validateFields(Entities.AIRLINES, formData, ['name']);
         if (errorMessage) {
             setFormData({
                 ...formData,
@@ -33,7 +34,7 @@ export default function AirlineCreateForm() {
         setFormData({ ...formData, isPending: true, error: null });
 
         try {
-            const create = await createData(airline, 'Airlines', dataCtx.apiUrl, navigate);
+            const create = await createData(airline, Entities.AIRLINES, dataCtx.apiUrl, navigate);
 
             if (create) {
                 console.error('Error creating airline:', create.message);
@@ -83,7 +84,7 @@ export default function AirlineCreateForm() {
             </div>
             <nav aria-label="Page navigation">
                 <ul className="pagination pagination-container pagination-container-absolute">
-                    <BackToListAction dataType="Airlines" />
+                    <BackToListAction dataType={Entities.AIRLINES} />
                 </ul>
             </nav>
         </>

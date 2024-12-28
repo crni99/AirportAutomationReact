@@ -9,13 +9,12 @@ import PageNavigationActions from '../common/pagination/PageNavigationActions.js
 import Alert from '../common/Alert.jsx';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
-
-const DATA_TYPE = "ApiUsers";
+import { Entities } from '../../utils/const.js';
 
 export default function ApiUserDetails() {
     const dataCtx = useContext(DataContext);
     const { id } = useParams();
-    const { data: apiUser, dataExist, error, isLoading } = useFetch(DATA_TYPE, id);
+    const { data: apiUser, dataExist, error, isLoading } = useFetch(Entities.API_USERS, id);
     const navigate = useNavigate();
 
     const [operationState, setOperationState] = useState({
@@ -29,9 +28,9 @@ export default function ApiUserDetails() {
             let operationResult;
 
             if (operation === 'edit') {
-                operationResult = await editData(DATA_TYPE, id, dataCtx.apiUrl, navigate);
+                operationResult = await editData(Entities.API_USERS, id, dataCtx.apiUrl, navigate);
             } else if (operation === 'delete') {
-                operationResult = await deleteData(DATA_TYPE, id, dataCtx.apiUrl, navigate);
+                operationResult = await deleteData(Entities.API_USERS, id, dataCtx.apiUrl, navigate);
             }
             if (operationResult) {
                 setOperationState(prevState => ({ ...prevState, operationError: operationResult.message }));
@@ -64,7 +63,7 @@ export default function ApiUserDetails() {
                             <dd className="col-sm-10">{apiUser.roles}</dd>
                         </dl>
                     </div>
-                    <PageNavigationActions dataType={DATA_TYPE} dataId={id} onEdit={() => handleOperation('edit')}
+                    <PageNavigationActions dataType={Entities.API_USERS} dataId={id} onEdit={() => handleOperation('edit')}
                         onDelete={() => handleOperation('delete')} />
                 </>
             )}

@@ -7,6 +7,7 @@ import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 import { validateFields } from '../../utils/validation/validateFields.js';
+import { Entities } from '../../utils/const.js';
 
 export default function PilotCreateForm() {
     const dataCtx = useContext(DataContext);
@@ -23,7 +24,7 @@ export default function PilotCreateForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const errorMessage = validateFields('Pilot', formData, ['firstName', 'lastName', 'uprn', 'flyingHours']);
+        const errorMessage = validateFields(Entities.PILOTS, formData, ['firstName', 'lastName', 'uprn', 'flyingHours']);
         if (errorMessage) {
             setFormData({
                 ...formData,
@@ -41,7 +42,7 @@ export default function PilotCreateForm() {
         setFormData({ ...formData, isPending: true, error: null });
 
         try {
-            const create = await createData(pilot, 'Pilots', dataCtx.apiUrl, navigate);
+            const create = await createData(pilot, Entities.PILOTS, dataCtx.apiUrl, navigate);
 
             if (create) {
                 console.error('Error creating pilot:', create.message);
@@ -58,7 +59,7 @@ export default function PilotCreateForm() {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prev) => {
-            const newError = validateFields('{Pilot}', { ...prev, [name]: value }, ['firstName', 'lastName', 'uprn', 'flyingHours']);
+            const newError = validateFields(Entities.PILOTS, { ...prev, [name]: value }, ['firstName', 'lastName', 'uprn', 'flyingHours']);
             return { ...prev, [name]: value, error: newError };
         });
     };
@@ -132,7 +133,7 @@ export default function PilotCreateForm() {
             </div>
             <nav aria-label="Page navigation">
                 <ul className="pagination pagination-container pagination-container-absolute">
-                    <BackToListAction dataType="Pilots" />
+                    <BackToListAction dataType={Entities.PILOTS} />
                 </ul>
             </nav>
         </>

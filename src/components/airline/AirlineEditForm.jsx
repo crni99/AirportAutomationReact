@@ -9,6 +9,7 @@ import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import useFetch from '../../hooks/useFetch.jsx';
 import { validateFields } from '../../utils/validation/validateFields.js';
+import { Entities } from '../../utils/const.js';
 
 export default function AirlineEditForm() {
     const dataCtx = useContext(DataContext);
@@ -21,7 +22,7 @@ export default function AirlineEditForm() {
         isPending: false,
     });
 
-    const { data: airlineData, fetchError, isLoading, isError } = useFetch('Airlines', id);
+    const { data: airlineData, fetchError, isLoading, isError } = useFetch(Entities.AIRLINES, id);
 
     useEffect(() => {
         if (airlineData) {
@@ -32,7 +33,7 @@ export default function AirlineEditForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const errorMessage = validateFields('Airline', formData, ['name']);
+        const errorMessage = validateFields(Entities.AIRLINES, formData, ['name']);
         if (errorMessage) {
             setFormData({
                 ...formData,
@@ -49,7 +50,7 @@ export default function AirlineEditForm() {
         setFormData((prevState) => ({ ...prevState, isPending: true }));
 
         try {
-            const edit = await editData(airline, 'Airlines', id, dataCtx.apiUrl, navigate);
+            const edit = await editData(airline, Entities.AIRLINES, id, dataCtx.apiUrl, navigate);
 
             if (edit) {
                 console.error('Error updating airline:', edit.message);
@@ -66,7 +67,7 @@ export default function AirlineEditForm() {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prev) => {
-            const newError = validateFields('Airline', { ...prev, [name]: value }, ['name']);
+            const newError = validateFields(Entities.AIRLINES, { ...prev, [name]: value }, ['name']);
             return { ...prev, [name]: value, error: newError };
         });
     };
@@ -101,7 +102,7 @@ export default function AirlineEditForm() {
             </div>
             <nav aria-label="Page navigation">
                 <ul className="pagination pagination-container pagination-container-absolute">
-                    <BackToListAction dataType="Airlines" />
+                    <BackToListAction dataType={Entities.AIRLINES} />
                 </ul>
             </nav>
         </>

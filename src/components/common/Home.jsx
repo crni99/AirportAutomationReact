@@ -12,6 +12,8 @@ export default function Home() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
 
+    const [currentDateTime, setCurrentDateTime] = useState('');
+
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -38,6 +40,24 @@ export default function Home() {
         };
     }, []);
 
+    useEffect(() => {
+        const updateDateTime = () => {
+            const now = new Date();
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const timeOptions = { hour12: false };
+            const dateTime = `${now.toLocaleDateString([], dateOptions)} - ${now.toLocaleTimeString([], timeOptions)}`;
+            setCurrentDateTime(dateTime);
+        };
+
+        updateDateTime();
+
+        const intervalId = setInterval(updateDateTime, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
+
     return (
         <div className="container">
             <br />
@@ -48,7 +68,7 @@ export default function Home() {
                     <div className="form-horizontal">
                         <div className="form-group">
                             <h1>Airport Automation React</h1>
-                            <p>The time is {new Date().toLocaleString()}</p>
+                            <p>{currentDateTime}</p>
                         </div>
                     </div>
                     {!isLoggedIn &&

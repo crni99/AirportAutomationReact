@@ -1,11 +1,12 @@
 import React from 'react';
+import { Entities } from '../../utils/const';
 
 export default function SearchInputWithButton({ type }) {
     const renderInput = () => {
         switch (type) {
-            case 'Airlines':
+            case Entities.AIRLINES:
                 return (
-                    <div className="input-group me-3" style={{ width: '70%' }}>
+                    <div className="input-group me-3">
                         <label htmlFor="searchInput" className="input-group-text">Name:</label>
                         <input
                             type="text"
@@ -18,7 +19,7 @@ export default function SearchInputWithButton({ type }) {
                     </div>
                 );
 
-            case 'Destinations':
+            case Entities.DESTINATIONS:
                 return (
                     <>
                         <div className="input-group me-3">
@@ -30,7 +31,7 @@ export default function SearchInputWithButton({ type }) {
                                 placeholder="Belgrade"
                                 required />
                         </div>
-                        <div class="input-group me-3">
+                        <div className="input-group me-3">
                             <label htmlFor="airport" className="input-group-text">Airport:</label>
                             <input
                                 type="text"
@@ -43,7 +44,7 @@ export default function SearchInputWithButton({ type }) {
                     </>
                 );
 
-            case 'Flights':
+            case Entities.FLIGHTS:
                 return (
                     <>
                         <div className="input-group me-3">
@@ -68,7 +69,7 @@ export default function SearchInputWithButton({ type }) {
                     </>
                 );
 
-            case 'Passengers':
+            case Entities.PASSENGERS:
                 return (
                     <>
                         <div className="input-group me-3">
@@ -93,7 +94,7 @@ export default function SearchInputWithButton({ type }) {
                     </>
                 );
 
-            case 'Pilots':
+            case Entities.PILOTS:
                 return (
                     <>
                         <div className="input-group me-3">
@@ -118,7 +119,7 @@ export default function SearchInputWithButton({ type }) {
                     </>
                 );
 
-            case 'PlaneTickets':
+            case Entities.PLANE_TICKETS:
                 return (
                     <>
                         <div className="input-group me-3">

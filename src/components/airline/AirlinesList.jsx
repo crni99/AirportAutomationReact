@@ -5,13 +5,14 @@ import LoadingSpinner from '../common/LoadingSpinner';
 import Alert from '../common/Alert';
 import ListHeader from "../common/ListHeader";
 import AirlinesListTable from "./AirlinesListTable";
+import { Entities } from '../../utils/const.js';
 
 // Make search working
 export default function AirlineList() {
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [airlines, setAirlines] = useState([]);
-    const { data, dataExist, error, isLoading, isError } = useFetch('Airlines', null, pageNumber);
+    const { data, dataExist, error, isLoading, isError } = useFetch(Entities.AIRLINES, null, pageNumber);
 
     useEffect(() => {
         if (data) {
@@ -27,7 +28,7 @@ export default function AirlineList() {
 
     return (
         <>
-            <ListHeader dataExist={dataExist} dataType="Airlines" createButtonTitle="Create Airline" />
+            <ListHeader dataExist={dataExist} dataType={Entities.AIRLINES} createButtonTitle="Create Airline" />
             <br />
             {isLoading && <LoadingSpinner />}
             {isError && error && <Alert alertType="error" alertText={error.message} />}

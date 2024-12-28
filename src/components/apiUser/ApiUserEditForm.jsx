@@ -9,6 +9,7 @@ import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import useFetch from '../../hooks/useFetch.jsx';
 import { validateFields } from '../../utils/validation/validateFields.js';
+import { Entities } from '../../utils/const.js';
 
 export default function ApiUserEditForm() {
     const dataCtx = useContext(DataContext);
@@ -16,19 +17,19 @@ export default function ApiUserEditForm() {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        username: '',
+        userName: '',
         password: '',
         roles: '',
         error: null,
         isPending: false,
     });
 
-    const { data: apiUserData, fetchError, isLoading, isError } = useFetch('ApiUsers', id);
+    const { data: apiUserData, fetchError, isLoading, isError } = useFetch(Entities.API_USERS, id);
 
     useEffect(() => {
         if (apiUserData) {
             setFormData((prevState) => ({ ...prevState, 
-                username: apiUserData.username || '',
+                userName: apiUserData.userName || '',
                 password: apiUserData.password || '',
                 roles: apiUserData.roles || ''
             }));
@@ -38,7 +39,7 @@ export default function ApiUserEditForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const errorMessage = validateFields('ApiUser', formData, ['username', 'password', 'roles']);
+        const errorMessage = validateFields(Entities.API_USERS, formData, ['userName', 'password', 'roles']);
         if (errorMessage) {
             setFormData({
                 ...formData,
@@ -49,7 +50,7 @@ export default function ApiUserEditForm() {
 
         const apiUser = {
             Id: id,
-            UserName: formData.username,
+            UserName: formData.userName,
             Password: formData.password,
             Roles: formData.roles
         };
@@ -57,7 +58,7 @@ export default function ApiUserEditForm() {
         setFormData((prevState) => ({ ...prevState, isPending: true }));
 
         try {
-            const edit = await editData(apiUser, 'ApiUsers', id, dataCtx.apiUrl, navigate);
+            const edit = await editData(apiUser, Entities.API_USERS, id, dataCtx.apiUrl, navigate);
 
             if (edit) {
                 console.error('Error updating api user:', edit.message);
@@ -74,7 +75,7 @@ export default function ApiUserEditForm() {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prev) => {
-            const newError = validateFields('ApiUser', { ...prev, [name]: value }, ['username', 'password', 'roles']);
+            const newError = validateFields(Entities.API_USERS, { ...prev, [name]: value }, ['userName', 'password', 'roles']);
             return { ...prev, [name]: value, error: newError };
         });
     };
@@ -86,13 +87,13 @@ export default function ApiUserEditForm() {
                 {formData.isPending && <LoadingSpinner />}
                 <form onSubmit={handleSubmit}>
                     <div className="form-group pb-4">
-                        <label htmlFor="username" className="control-label">Username</label>
+                        <label htmlFor="userName" className="control-label">Username</label>
                         <input
-                            id="username"
+                            id="userName"
                             type="text"
                             className="form-control"
-                            name="username"
-                            value={formData.username}
+                            name="userName"
+                            value={formData.userName}
                             onChange={handleChange}
                             required
                         />
@@ -133,7 +134,7 @@ export default function ApiUserEditForm() {
             </div>
             <nav aria-label="Page navigation">
                 <ul className="pagination pagination-container pagination-container-absolute">
-                    <BackToListAction dataType="ApiUsers" />
+                    <BackToListAction dataType={Entities.API_USERS} />
                 </ul>
             </nav>
         </>

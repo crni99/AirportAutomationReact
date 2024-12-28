@@ -6,6 +6,7 @@ import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import { DataContext } from '../../store/data-context.jsx';
 import { validateFields } from '../../utils/validation/validateFields.js';
+import { Entities } from '../../utils/const.js';
 
 export default function DestinationCreateForm() {
     const dataCtx = useContext(DataContext);
@@ -20,7 +21,7 @@ export default function DestinationCreateForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const errorMessage = validateFields('Destination', formData, ['city', 'airport']);
+        const errorMessage = validateFields(Entities.DESTINATIONS, formData, ['city', 'airport']);
         if (errorMessage) {
             setFormData({
                 ...formData,
@@ -33,7 +34,7 @@ export default function DestinationCreateForm() {
         setFormData({ ...formData, isPending: true, error: null });
 
         try {
-            const create = await createData(destination, 'Destinations', dataCtx.apiUrl, navigate);
+            const create = await createData(destination, Entities.DESTINATIONS, dataCtx.apiUrl, navigate);
 
             if (create) {
                 console.error('Error creating destination:', create.message);
@@ -50,7 +51,7 @@ export default function DestinationCreateForm() {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prev) => {
-            const newError = validateFields('Destination', { ...prev, [name]: value }, ['city', 'airport']);
+            const newError = validateFields(Entities.DESTINATIONS, { ...prev, [name]: value }, ['city', 'airport']);
             return { ...prev, [name]: value, error: newError };
         });
     };
@@ -96,7 +97,7 @@ export default function DestinationCreateForm() {
             </div>
             <nav aria-label="Page navigation">
                 <ul className="pagination pagination-container pagination-container-absolute">
-                    <BackToListAction dataType="Destinations" />
+                    <BackToListAction dataType={Entities.DESTINATIONS} />
                 </ul>
             </nav>
         </>

@@ -1,6 +1,8 @@
+import { Entities } from '../../utils/const.js';
+
 export const validateField = (type, field, value) => {
     switch (type) {
-        case 'Airline':
+        case Entities.AIRLINES:
             if (field === 'name') {
                 if (!value.trim()) {
                     return "Airline name is required.";
@@ -10,7 +12,7 @@ export const validateField = (type, field, value) => {
                 }
             }
             break;
-        case 'Destination':
+        case Entities.DESTINATIONS:
             if (field === 'city') {
                 if (!value.trim()) {
                     return "Destination city is required.";
@@ -28,7 +30,7 @@ export const validateField = (type, field, value) => {
                 }
             }
             break;
-        case 'Passenger':
+        case Entities.PASSENGERS:
             if (field === 'firstName') {
                 if (!value.trim()) {
                     return "Passenger first name is required.";
@@ -78,7 +80,7 @@ export const validateField = (type, field, value) => {
                 }
             }
             break;
-        case 'Pilot':
+        case Entities.PILOTS:
             if (field === 'firstName') {
                 if (!value.trim()) {
                     return "Pilot first name is required.";
@@ -116,8 +118,8 @@ export const validateField = (type, field, value) => {
                 }
             }
             break;
-        case 'ApiUser':
-            if (field === 'username') {
+        case Entities.API_USERS:
+            if (field === 'userName') {
                 if (!value.trim()) {
                     return "ApiUser username is required.";
                 }
@@ -131,6 +133,108 @@ export const validateField = (type, field, value) => {
                 }
                 if (value.length > 255) {
                     return "ApiUser password cannot exceed 50 characters.";
+                }
+            }
+            break;
+        case Entities.FLIGHTS:
+            if (field === 'departureDate') {
+                if (!value.trim()) {
+                    return "Flight departure date is required.";
+                }
+                const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+                if (!datePattern.test(value)) {
+                    return "Flight departure date must be in the format YYYY-MM-DD.";
+                }
+            }
+            if (field === 'departureTime') {
+                if (!value.trim()) {
+                    return "Flight departure time is required.";
+                }
+                const timePattern = /^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$/;
+                if (!timePattern.test(value)) {
+                    return "Flight departure time must be in the format HH:mm.";
+                }
+            }
+            if (field === 'airlineId') {
+                if (!value || isNaN(value)) {
+                    return "Airline ID is required and must be a number.";
+                }
+                if (value === null || value === "") {
+                    return "Airline ID cannot be null or empty.";
+                }
+            }
+
+            if (field === 'destinationId') {
+                if (!value || isNaN(value)) {
+                    return "Destination ID is required and must be a number.";
+                }
+                if (value === null || value === "") {
+                    return "Destination ID cannot be null or empty.";
+                }
+            }
+
+            if (field === 'pilotId') {
+                if (!value || isNaN(value)) {
+                    return "Pilot ID is required and must be a number.";
+                }
+                if (value === null || value === "") {
+                    return "Pilot ID cannot be null or empty.";
+                }
+            }
+            break;
+        case Entities.PLANE_TICKETS:
+            if (field === 'price') {
+                const priceValue = String(value).trim();
+                if (!priceValue || isNaN(priceValue)) {
+                    return "Price is required and must be a number.";
+                }
+                const price = parseInt(priceValue, 10);
+                if (price < 0) {
+                    return "Price cannot be lower than 0.";
+                }
+            }
+            if (field === 'purchaseDate') {
+                const purchaseDateValue = String(value).trim();
+                if (!purchaseDateValue) {
+                    return "Purchase date is required.";
+                }
+                const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+                if (!datePattern.test(purchaseDateValue)) {
+                    return "Purchase date must be in the format YYYY-MM-DD.";
+                }
+            }
+            if (field === 'seatNumber') {
+                const seatNumberValue = String(value).trim();
+                if (!seatNumberValue || isNaN(seatNumberValue)) {
+                    return "Seat number is required and must be a number.";
+                }
+                const seatNumber = parseInt(seatNumberValue, 10);
+                if (seatNumber < 0) {
+                    return "Seat number cannot be lower than 0.";
+                }
+            }
+            if (field === 'passengerId') {
+                if (!value || isNaN(value)) {
+                    return "Passenger ID is required and must be a number.";
+                }
+                if (value === null || value === "") {
+                    return "Passenger ID cannot be null or empty.";
+                }
+            }
+            if (field === 'travelClassId') {
+                if (!value || isNaN(value)) {
+                    return "Travel class ID is required and must be a number.";
+                }
+                if (value === null || value === "") {
+                    return "Travel class ID cannot be null or empty.";
+                }
+            }
+            if (field === 'flightId') {
+                if (!value || isNaN(value)) {
+                    return "Flight ID is required and must be a number.";
+                }
+                if (value === null || value === "") {
+                    return "Flight ID cannot be null or empty.";
                 }
             }
             break;

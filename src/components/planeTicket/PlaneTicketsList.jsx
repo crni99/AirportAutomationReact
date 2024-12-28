@@ -3,20 +3,20 @@ import useFetch from '../../hooks/useFetch';
 import { Pagination } from '../common/pagination/Pagination';
 import LoadingSpinner from '../common/LoadingSpinner';
 import Alert from '../common/Alert';
-import ApiUsersListTable from "./ApiUsersListTable";
-import PageTitle from '../common/PageTitle';
+import ListHeader from "../common/ListHeader";
+import PlaneTicketsListTable from "./PlaneTicketsListTable";
 import { Entities } from '../../utils/const.js';
 
 // Make search working
-export default function ApiUsersList() {
+export default function PlaneTicketsList() {
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [apiUsers, setApiUsers] = useState([]);
-    const { data, error, isLoading, isError } = useFetch(Entities.API_USERS, null, pageNumber);
+    const [planeTickets, setPlaneTickets] = useState([]);
+    const { data, dataExist, error, isLoading, isError } = useFetch(Entities.PLANE_TICKETS, null, pageNumber);
 
     useEffect(() => {
         if (data) {
-            setApiUsers(data.data);
+            setPlaneTickets(data.data);
             setPageNumber(data.pageNumber);
             setTotalPages(data.totalPages);
         }
@@ -28,17 +28,17 @@ export default function ApiUsersList() {
 
     return (
         <>
-            <PageTitle title='Api Users' />
+            <ListHeader dataExist={dataExist} dataType={Entities.PLANE_TICKETS} createButtonTitle="Create Plane Ticket" />
             <br />
             {isLoading && <LoadingSpinner />}
             {isError && error && <Alert alertType="error" alertText={error.message} />}
             {!isError && !isLoading && (
                 <div className="form-horizontal">
                     <div className="form-group">
-                        {apiUsers && apiUsers.length > 0 ? (
-                            <ApiUsersListTable apiUsers={apiUsers} />
+                        {planeTickets && planeTickets.length > 0 ? (
+                            <PlaneTicketsListTable planeTickets={planeTickets} />
                         ) : (
-                            <Alert alertType="info" alertText="No api users available" />
+                            <Alert alertType="info" alertText="No plane tickets available" />
                         )}
                         <div>
                             <Pagination pageNumber={pageNumber} lastPage={totalPages} onPageChange={handlePageChange} />

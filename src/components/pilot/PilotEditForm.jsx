@@ -9,6 +9,7 @@ import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import useFetch from '../../hooks/useFetch.jsx';
 import { validateFields } from '../../utils/validation/validateFields.js';
+import { Entities } from '../../utils/const.js';
 
 export default function PilotEditForm() {
     const dataCtx = useContext(DataContext);
@@ -24,7 +25,7 @@ export default function PilotEditForm() {
         isPending: false,
     });
 
-    const { data: pilotData, fetchError, isLoading, isError } = useFetch('Pilots', id);
+    const { data: pilotData, fetchError, isLoading, isError } = useFetch(Entities.PILOTS, id);
 
     useEffect(() => {
         if (pilotData) {
@@ -40,7 +41,7 @@ export default function PilotEditForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const errorMessage = validateFields('Pilot', formData, ['firstName', 'lastName', 'uprn', 'flyingHours']);
+        const errorMessage = validateFields(Entities.PILOTS, formData, ['firstName', 'lastName', 'uprn', 'flyingHours']);
         if (errorMessage) {
             setFormData({
                 ...formData,
@@ -59,7 +60,7 @@ export default function PilotEditForm() {
         setFormData((prevState) => ({ ...prevState, isPending: true }));
 
         try {
-            const edit = await editData(pilot, 'Pilot', id, dataCtx.apiUrl, navigate);
+            const edit = await editData(pilot, Entities.PILOTS, id, dataCtx.apiUrl, navigate);
 
             if (edit) {
                 console.error('Error updating pilot:', edit.message);
@@ -76,7 +77,7 @@ export default function PilotEditForm() {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prev) => {
-            const newError = validateFields('{Pilot}', { ...prev, [name]: value }, ['firstName', 'lastName', 'uprn', 'flyingHours']);
+            const newError = validateFields(Entities.PILOTS, { ...prev, [name]: value }, ['firstName', 'lastName', 'uprn', 'flyingHours']);
             return { ...prev, [name]: value, error: newError };
         });
     };
@@ -149,7 +150,7 @@ export default function PilotEditForm() {
             </div>
             <nav aria-label="Page navigation">
                 <ul className="pagination pagination-container pagination-container-absolute">
-                    <BackToListAction dataType="Pilots" />
+                    <BackToListAction dataType={Entities.PILOTS} />
                 </ul>
             </nav>
         </>

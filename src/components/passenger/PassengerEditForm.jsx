@@ -9,6 +9,7 @@ import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import useFetch from '../../hooks/useFetch.jsx';
 import { validateFields } from '../../utils/validation/validateFields.js';
+import { Entities } from '../../utils/const.js';
 
 export default function PassengerEditForm() {
     const dataCtx = useContext(DataContext);
@@ -26,7 +27,7 @@ export default function PassengerEditForm() {
         isPending: false,
     });
 
-    const { data: passengerData, fetchError, isLoading, isError } = useFetch('Passengers', id);
+    const { data: passengerData, fetchError, isLoading, isError } = useFetch(Entities.PASSENGERS, id);
 
     useEffect(() => {
         if (passengerData) {
@@ -44,7 +45,7 @@ export default function PassengerEditForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const errorMessage = validateFields('Passenger', formData, ['firstName', 'lastName', 'uprn', 'passport', 'address', 'phone']);
+        const errorMessage = validateFields(Entities.PASSENGERS, formData, ['firstName', 'lastName', 'uprn', 'passport', 'address', 'phone']);
         if (errorMessage) {
             setFormData({
                 ...formData,
@@ -66,7 +67,7 @@ export default function PassengerEditForm() {
         setFormData((prevState) => ({ ...prevState, isPending: true }));
 
         try {
-            const edit = await editData(passenger, 'Passengers', id, dataCtx.apiUrl, navigate);
+            const edit = await editData(passenger, Entities.PASSENGERS, id, dataCtx.apiUrl, navigate);
 
             if (edit) {
                 console.error('Error updating passenger:', edit.message);
@@ -83,7 +84,7 @@ export default function PassengerEditForm() {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prev) => {
-            const newError = validateFields('Passenger', { ...prev, [name]: value }, ['firstName', 'lastName', 'uprn', 'passport', 'address', 'phone']);
+            const newError = validateFields(Entities.PASSENGERS, { ...prev, [name]: value }, ['firstName', 'lastName', 'uprn', 'passport', 'address', 'phone']);
             return { ...prev, [name]: value, error: newError };
         });
     };
@@ -178,7 +179,7 @@ export default function PassengerEditForm() {
             </div>
             <nav aria-label="Page navigation">
                 <ul className="pagination pagination-container pagination-container-absolute">
-                    <BackToListAction dataType="Passengers" />
+                    <BackToListAction dataType={Entities.PASSENGERS} />
                 </ul>
             </nav>
         </>

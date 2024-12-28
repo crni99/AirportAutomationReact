@@ -7,6 +7,7 @@ import BackToListAction from '../common/pagination/BackToListAction.jsx';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 import { validateFields } from '../../utils/validation/validateFields.js';
+import { Entities } from '../../utils/const.js';
 
 export default function PassengerCreateForm() {
     const dataCtx = useContext(DataContext);
@@ -25,7 +26,7 @@ export default function PassengerCreateForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const errorMessage = validateFields('Passenger', formData, ['firstName', 'lastName', 'uprn', 'passport', 'address', 'phone']);
+        const errorMessage = validateFields(Entities.PASSENGERS, formData, ['firstName', 'lastName', 'uprn', 'passport', 'address', 'phone']);
         if (errorMessage) {
             setFormData({
                 ...formData,
@@ -45,7 +46,7 @@ export default function PassengerCreateForm() {
         setFormData({ ...formData, isPending: true, error: null });
 
         try {
-            const create = await createData(passenger, 'Passengers', dataCtx.apiUrl, navigate);
+            const create = await createData(passenger, Entities.PASSENGERS, dataCtx.apiUrl, navigate);
 
             if (create) {
                 console.error('Error creating passenger:', create.message);
@@ -62,7 +63,7 @@ export default function PassengerCreateForm() {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((prev) => {
-            const newError = validateFields('Passenger', { ...prev, [name]: value }, ['firstName', 'lastName', 'uprn', 'passport', 'address', 'phone']);
+            const newError = validateFields(Entities.PASSENGERS, { ...prev, [name]: value }, ['firstName', 'lastName', 'uprn', 'passport', 'address', 'phone']);
             return { ...prev, [name]: value, error: newError };
         });
     };
@@ -160,7 +161,7 @@ export default function PassengerCreateForm() {
             </div>
             <nav aria-label="Page navigation">
                 <ul className="pagination pagination-container pagination-container-absolute">
-                    <BackToListAction dataType="Passengers" />
+                    <BackToListAction dataType={Entities.PASSENGERS} />
                 </ul>
             </nav>
         </>

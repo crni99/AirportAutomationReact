@@ -5,6 +5,8 @@ import DestinationsRoutes from './routes/destinationRoutes';
 import TravelClassesRoutes from './routes/travelClassesRoutes';
 import PassengersRoutes from './routes/passengersRoutes';
 import PilotsRoutes from './routes/pilotsRoutes';
+import FlightsRoutes from './routes/flightRoutes';
+import PlaneTicketsRoutes from './routes/planeTicketRoutes';
 import Home from './components/common/Home';
 import Header from './components/common/header/Header';
 import HealthCheck from './components/common/HealthCheck';
@@ -40,6 +42,8 @@ function App() {
             {PassengersRoutes}
             {PilotsRoutes}
             {ApiUsersRoutes}
+            {FlightsRoutes}
+            {PlaneTicketsRoutes}
 
           </Routes>
         </div>

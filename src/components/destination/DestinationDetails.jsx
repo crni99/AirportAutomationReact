@@ -10,13 +10,12 @@ import Alert from '../common/Alert.jsx';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 import openMap from '../../utils/openMapHelper.js'
-
-const DATA_TYPE = "Destinations";
+import { Entities } from '../../utils/const.js';
 
 export default function DestinationDetails() {
     const dataCtx = useContext(DataContext);
     const { id } = useParams();
-    const { data: destination, dataExist, error, isLoading } = useFetch(DATA_TYPE, id);
+    const { data: destination, dataExist, error, isLoading } = useFetch(Entities.DESTINATIONS, id);
     const navigate = useNavigate();
 
     const [operationState, setOperationState] = useState({
@@ -30,9 +29,9 @@ export default function DestinationDetails() {
             let operationResult;
 
             if (operation === 'edit') {
-                operationResult = await editData(DATA_TYPE, id, dataCtx.apiUrl, navigate);
+                operationResult = await editData(Entities.DESTINATIONS, id, dataCtx.apiUrl, navigate);
             } else if (operation === 'delete') {
-                operationResult = await deleteData(DATA_TYPE, id, dataCtx.apiUrl, navigate);
+                operationResult = await deleteData(Entities.DESTINATIONS, id, dataCtx.apiUrl, navigate);
             }
             if (operationResult) {
                 setOperationState(prevState => ({ ...prevState, operationError: operationResult.message }));
@@ -69,7 +68,7 @@ export default function DestinationDetails() {
                             </dd>
                         </dl>
                     </div>
-                    <PageNavigationActions dataType={DATA_TYPE} dataId={id} onEdit={() => handleOperation('edit')}
+                    <PageNavigationActions dataType={Entities.DESTINATIONS} dataId={id} onEdit={() => handleOperation('edit')}
                         onDelete={() => handleOperation('delete')} />
                 </>
             )}
