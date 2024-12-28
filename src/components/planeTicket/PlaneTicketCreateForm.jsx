@@ -97,7 +97,7 @@ export default function PlaneTicketCreateForm() {
         if (flights?.data) {
             setAllFlights((prev) => [...prev, ...flights.data]);
         }
-    }, [pageNumber]);
+    }, [flights.data, passengers.data, travelClasses.data]);
 
     if (isLoadingPassengers || isLoadingTravelClasses || isLoadingFlights) {
         return <LoadingSpinner />

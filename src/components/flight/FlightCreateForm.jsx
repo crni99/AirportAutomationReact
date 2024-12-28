@@ -97,7 +97,7 @@ export default function FlightCreateForm() {
         if (pilots?.data) {
             setAllPilots((prev) => [...prev, ...pilots.data]);
         }
-    }, [pageNumber]);
+    }, [airlines.data, destinations.data, pilots.data]);
 
     if (isLoadingAirlines || isLoadingDestinations || isLoadingPilots) {
         return <LoadingSpinner />
