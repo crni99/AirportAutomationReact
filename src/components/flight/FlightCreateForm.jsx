@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import useFetch from '../../hooks/useFetch.jsx';
 import { useNavigate } from 'react-router-dom';
 import { createData } from '../../utils/create.js';
@@ -14,6 +14,7 @@ import { formatTime } from '../../utils/formatting.js';
 export default function FlightCreateForm() {
 
     const [pageNumber, setPageNumber] = useState(1);
+    const isInitialLoad = useRef(true);
 
     const [allAirlines, setAllAirlines] = useState([]);
     const [allDestinations, setAllDestinations] = useState([]);
@@ -88,16 +89,35 @@ export default function FlightCreateForm() {
     };
 
     useEffect(() => {
-        if (airlines?.data) {
-            setAllAirlines((prev) => [...prev, ...airlines.data]);
+        if (isInitialLoad.current) {
+            isInitialLoad.current = false;
+            return;
         }
-        if (destinations?.data) {
-            setAllDestinations((prev) => [...prev, ...destinations.data]);
+        if (airlines?.data && airlines.data.length > 0) {
+            setAllAirlines((prev) => {
+                const newAirlines = airlines.data.filter(
+                    (airline) => !prev.some((prevAirline) => prevAirline.id === airline.id)
+                );
+                return [...prev, ...newAirlines];
+            });
         }
-        if (pilots?.data) {
-            setAllPilots((prev) => [...prev, ...pilots.data]);
+        if (destinations?.data && destinations.data.length > 0) {
+            setAllDestinations((prev) => {
+                const newDestinations = destinations.data.filter(
+                    (destination) => !prev.some((prevDestination) => prevDestination.id === destination.id)
+                );
+                return [...prev, ...newDestinations];
+            });
         }
-    }, [airlines.data, destinations.data, pilots.data]);
+        if (pilots?.data && pilots.data.length > 0) {
+            setAllPilots((prev) => {
+                const newPilots = pilots.data.filter(
+                    (pilot) => !prev.some((prevPilot) => prevPilot.id === pilot.id)
+                );
+                return [...prev, ...newPilots];
+            });
+        }
+    }, [pageNumber, airlines?.data, destinations?.data, pilots?.data]);
 
     if (isLoadingAirlines || isLoadingDestinations || isLoadingPilots) {
         return <LoadingSpinner />
@@ -149,8 +169,13 @@ export default function FlightCreateForm() {
                             </button>
                         </div>
                         <div className="form-group">
-                            <input type="button" value="Load More" className="btn btn-primary"
-                                id="loadMoreButton" onClick={handleLoadMore} />
+                            <input
+                                type="button"
+                                value="Load More"
+                                className="btn btn-primary"
+                                id="loadMoreButton"
+                                onClick={handleLoadMore}
+                                disabled={isLoadingAirlines || isLoadingDestinations || isLoadingPilots} />
                         </div>
                     </div>
                     <div className="col-md-4">

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import useFetch from '../../hooks/useFetch.jsx';
 import { useNavigate } from 'react-router-dom';
 import { createData } from '../../utils/create.js';
 import PageTitle from '../common/PageTitle.jsx';
 import Alert from '../common/Alert.jsx';
 import BackToListAction from '../common/pagination/BackToListAction.jsx';
-import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 import { validateFields } from '../../utils/validation/validateFields.js';
 import { Entities } from '../../utils/const.js';
@@ -14,6 +13,7 @@ import LoadingSpinner from '../common/LoadingSpinner.jsx';
 export default function PlaneTicketCreateForm() {
 
     const [pageNumber, setPageNumber] = useState(1);
+    const isInitialLoad = useRef(true);
 
     const [allPassengers, setAllPassengers] = useState([]);
     const [allTravelClasses, setAllTravelClasses] = useState([]);
@@ -88,16 +88,35 @@ export default function PlaneTicketCreateForm() {
     };
 
     useEffect(() => {
-        if (passengers?.data) {
-            setAllPassengers((prev) => [...prev, ...passengers.data]);
+        if (isInitialLoad.current) {
+            isInitialLoad.current = false;
+            return;
         }
-        if (travelClasses?.data) {
-            setAllTravelClasses((prev) => [...prev, ...travelClasses.data]);
+        if (passengers?.data && passengers.data.length > 0) {
+            setAllPassengers((prev) => {
+                const newPassengers = passengers.data.filter(
+                    (passenger) => !prev.some((prevPassenger) => prevPassenger.id === passenger.id)
+                );
+                return [...prev, ...newPassengers];
+            });
         }
-        if (flights?.data) {
-            setAllFlights((prev) => [...prev, ...flights.data]);
+        if (travelClasses?.data && travelClasses.data.length > 0) {
+            setAllTravelClasses((prev) => {
+                const newTravelClasses = travelClasses.data.filter(
+                    (travelClass) => !prev.some((prevTravelClass) => prevTravelClass.id === travelClass.id)
+                );
+                return [...prev, ...newTravelClasses];
+            });
         }
-    }, [flights.data, passengers.data, travelClasses.data]);
+        if (flights?.data && flights.data.length > 0) {
+            setAllFlights((prev) => {
+                const newFlights = flights.data.filter(
+                    (flight) => !prev.some((prevFlight) => prevFlight.id === flight.id)
+                );
+                return [...prev, ...newFlights];
+            });
+        }
+    }, [pageNumber, passengers?.data, travelClasses?.data, flights?.data]);
 
     if (isLoadingPassengers || isLoadingTravelClasses || isLoadingFlights) {
         return <LoadingSpinner />
@@ -106,7 +125,6 @@ export default function PlaneTicketCreateForm() {
     if (errorPassengers || errorTravelClasses || errorFlights) {
         return <Alert alertType='danger' alertText='Error loading data..' />;
     }
-
     return (
         <>
             <PageTitle title='Create Plane Ticket' />
@@ -149,8 +167,13 @@ export default function PlaneTicketCreateForm() {
                             </button>
                         </div>
                         <div className="form-group">
-                            <input type="button" value="Load More" className="btn btn-primary"
-                                id="loadMoreButton" onClick={handleLoadMore} />
+                            <input
+                                type="button"
+                                value="Load More"
+                                className="btn btn-primary"
+                                id="loadMoreButton"
+                                onClick={handleLoadMore}
+                                disabled={isLoadingPassengers || isLoadingTravelClasses || isLoadingFlights} />
                         </div>
                     </div>
                     <div className="col-md-4">
