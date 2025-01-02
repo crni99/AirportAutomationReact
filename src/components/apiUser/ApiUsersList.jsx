@@ -4,21 +4,22 @@ import { Pagination } from '../common/pagination/Pagination';
 import LoadingSpinner from '../common/LoadingSpinner';
 import Alert from '../common/Alert';
 import ApiUsersListTable from "./ApiUsersListTable";
-import PageTitle from '../common/PageTitle';
+import ListHeader from "../common/ListHeader";
 import { Entities } from '../../utils/const.js';
 
-// Make search working
 export default function ApiUsersList() {
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [apiUsers, setApiUsers] = useState([]);
-    const { data, error, isLoading, isError } = useFetch(Entities.API_USERS, null, pageNumber);
+    const [triggerFetch, setTriggerFetch] = useState(false);
+    const { data, dataExist, error, isLoading, isError } = useFetch(Entities.API_USERS, null, pageNumber, triggerFetch);
 
     useEffect(() => {
         if (data) {
             setApiUsers(data.data);
             setPageNumber(data.pageNumber);
             setTotalPages(data.totalPages);
+            setTriggerFetch(false);
         }
     }, [data]);
 
@@ -28,7 +29,7 @@ export default function ApiUsersList() {
 
     return (
         <>
-            <PageTitle title='Api Users' />
+            <ListHeader dataExist={dataExist} dataType={Entities.API_USERS} setTriggerFetch={setTriggerFetch} />
             <br />
             {isLoading && <LoadingSpinner />}
             {isError && error && <Alert alertType="error" alertText={error.message} />}

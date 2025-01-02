@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback  } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getAuthToken } from '../utils/auth.js';
 import { useContext } from 'react';
 import { DataContext } from '../store/data-context.jsx';
 import { generateErrorMessage, handleNetworkError } from '../utils/errorUtils.js';
+import { Entities } from '../utils/const.js';
 
-export default function useFetch(dataType, dataId, page = 1) {
+export default function useFetch(dataType, dataId, page = 1, triggerFetch) {
     const dataCtx = useContext(DataContext);
 
     const [data, setData] = useState(null);
@@ -38,7 +39,7 @@ export default function useFetch(dataType, dataId, page = 1) {
                 if (!dataCtx || !dataCtx.apiUrl) {
                     throw new Error('API URL is not available');
                 }
-                const url = buildUrl(dataCtx.apiUrl, dataType, dataId, page, dataCtx.pageSize);
+                const url = buildURL(dataCtx.apiUrl, dataType, dataId, page, dataCtx.pageSize);
                 const response = await fetch(url, { headers: buildHeaders() });
                 handleResponse(response);
             } catch (error) {
@@ -49,14 +50,79 @@ export default function useFetch(dataType, dataId, page = 1) {
         }
 
         fetchData();
-    }, [dataType, dataId, page, dataCtx, handleResponse]);
+    }, [dataType, dataId, page, dataCtx, handleResponse, triggerFetch]);
 
-    function buildUrl(apiUrl, dataType, dataId, page, pageSize) {
+    function buildURL(apiUrl, dataType, dataId, page, pageSize) {
         let url = `${apiUrl}/${dataType}`;
+
         if (dataId !== null) {
             url += `/${dataId}`;
         } else {
-            url += `?page=${page}&pageSize=${pageSize || 10}`;
+            let paginationParams = `page=${page}&pageSize=${pageSize || 10}`;
+            url += `?${paginationParams}`;
+
+            switch (dataType) {
+                case Entities.AIRLINES:
+                    const searchName = document.getElementById('searchInput')?.value;
+                    if (searchName && searchName.trim() !== '') {
+                        url = `${apiUrl}/${Entities.AIRLINES}/ByName/${encodeURIComponent(searchName)}?&${paginationParams}`;
+                    }
+                    break;
+
+                case Entities.API_USERS:
+                    const searchRole = document.getElementById('roleSelect')?.value;
+                    if (searchRole && searchRole.trim() !== '') {
+                        url = `${apiUrl}/${Entities.API_USERS}/byRole/${encodeURIComponent(searchRole)}?&${paginationParams}`;
+                    }
+                    break;
+
+                case Entities.DESTINATIONS:
+                    const city = document.getElementById('city')?.value;
+                    const airport = document.getElementById('airport')?.value;
+                    if (city || airport) {
+                        url = `${apiUrl}/${Entities.DESTINATIONS}/search?city=${encodeURIComponent(city)}&airport=${encodeURIComponent(airport)}&${paginationParams}`;
+                    }
+                    break;
+
+                case Entities.FLIGHTS:
+                    const startDate = document.getElementById('startDate')?.value;
+                    const endDate = document.getElementById('endDate')?.value;
+                    if (startDate || endDate) {
+                        url = `${apiUrl}/${Entities.FLIGHTS}/byDate?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}&${paginationParams}`;
+                    }
+                    break;
+
+                case Entities.PASSENGERS:
+                    const firstNamePassenger = document.getElementById('firstName')?.value;
+                    const lastNamePassenger = document.getElementById('lastName')?.value;
+                    if (firstNamePassenger || lastNamePassenger) {
+                        url = `${apiUrl}/${Entities.PASSENGERS}/byName?firstName=${encodeURIComponent(firstNamePassenger)}&lastName=${encodeURIComponent(lastNamePassenger)}&${paginationParams}`;
+                    }
+                    break;
+
+                case Entities.PILOTS:
+                    const firstNamePilot = document.getElementById('firstName')?.value;
+                    const lastNamePilot = document.getElementById('lastName')?.value;
+                    if (firstNamePilot || lastNamePilot) {
+                        url = `${apiUrl}/${Entities.PILOTS}/byName?firstName=${encodeURIComponent(firstNamePilot)}&lastName=${encodeURIComponent(lastNamePilot)}&${paginationParams}`;
+                    }
+                    break;
+
+                case Entities.PLANE_TICKETS:
+                    const minPrice = document.getElementById('minPrice')?.value;
+                    const maxPrice = document.getElementById('maxPrice')?.value;
+                    if ((minPrice && minPrice.trim() !== '') || (maxPrice && maxPrice.trim() !== '')) {
+                        if (isNaN(minPrice) || isNaN(maxPrice)) {
+                            return `${apiUrl}/${dataType}?${paginationParams}`;
+                        }
+                        url = `${apiUrl}/${Entities.PLANE_TICKETS}/byPrice?minPrice=${encodeURIComponent(minPrice)}&maxPrice=${encodeURIComponent(maxPrice)}&${paginationParams}`;
+                    }
+                    break;
+
+                default:
+                    url = `${apiUrl}/${dataType}?${paginationParams}`;
+                    break;
+            }
         }
         return url;
     }
@@ -79,6 +145,5 @@ export default function useFetch(dataType, dataId, page = 1) {
         }
         setIsError(true);
     }
-
     return { data, dataExist, error, isLoading, isError };
 }

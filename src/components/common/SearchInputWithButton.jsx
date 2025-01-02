@@ -1,7 +1,12 @@
 import React from 'react';
 import { Entities } from '../../utils/const';
 
-export default function SearchInputWithButton({ type }) {
+export default function SearchInputWithButton({ type, setTriggerFetch }) {
+
+    const handleSearch = () => {
+        setTriggerFetch(true);
+    };
+
     const renderInput = () => {
         switch (type) {
             case Entities.AIRLINES:
@@ -15,7 +20,21 @@ export default function SearchInputWithButton({ type }) {
                             placeholder="Air Serbia"
                             required
                         />
-                        <button id="searchButton" className="btn btn-primary">Search</button>
+                        <button id="searchButton" className="btn btn-primary" onClick={handleSearch}>Search</button>
+                    </div>
+                );
+
+            case Entities.API_USERS:
+                return (
+                    <div className="input-group me-3">
+                        <label htmlFor="roleSelect" className="input-group-text">Role:</label>
+                        <select id="roleSelect" className="form-control" required>
+                            <option value="" disabled selected>Select a role</option>
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
+                            <option value="SuperAdmin">Super Admin</option>
+                        </select>
+                        <button id="searchButton" className="btn btn-primary" onClick={handleSearch}>Search</button>
                     </div>
                 );
 
@@ -39,7 +58,7 @@ export default function SearchInputWithButton({ type }) {
                                 className="form-control"
                                 placeholder="Belgrade Nikola Tesla"
                                 required />
-                            <button id="searchButton" className="btn btn-primary">Search</button>
+                            <button id="searchButton" className="btn btn-primary" onClick={handleSearch}>Search</button>
                         </div>
                     </>
                 );
@@ -53,7 +72,7 @@ export default function SearchInputWithButton({ type }) {
                                 type="text"
                                 id="startDate"
                                 className="form-control"
-                                placeholder="10.06.2023."
+                                placeholder="2023-06-07"
                                 required />
                         </div>
                         <div className="input-group me-3">
@@ -62,9 +81,9 @@ export default function SearchInputWithButton({ type }) {
                                 type="text"
                                 id="endDate"
                                 className="form-control"
-                                placeholder="14.06.2023."
+                                placeholder="2023-14-06"
                                 required />
-                            <button id="searchButton" className="btn btn-primary">Search</button>
+                            <button id="searchButton" className="btn btn-primary" onClick={handleSearch}>Search</button>
                         </div>
                     </>
                 );
@@ -89,7 +108,7 @@ export default function SearchInputWithButton({ type }) {
                                 className="form-control"
                                 placeholder="Andjelic"
                                 required />
-                            <button id="searchButton" className="btn btn-primary">Search</button>
+                            <button id="searchButton" className="btn btn-primary" onClick={handleSearch}>Search</button>
                         </div>
                     </>
                 );
@@ -114,7 +133,7 @@ export default function SearchInputWithButton({ type }) {
                                 className="form-control"
                                 placeholder="Andjelic"
                                 required />
-                            <button id="searchButton" className="btn btn-primary">Search</button>
+                            <button id="searchButton" className="btn btn-primary" onClick={handleSearch}>Search</button>
                         </div>
                     </>
                 );
@@ -139,7 +158,7 @@ export default function SearchInputWithButton({ type }) {
                                 className="form-control"
                                 placeholder="600"
                                 required />
-                            <button id="searchButton" className="btn btn-primary">Search</button>
+                            <button id="searchButton" className="btn btn-primary" onClick={handleSearch}>Search</button>
                         </div>
                     </>
                 );

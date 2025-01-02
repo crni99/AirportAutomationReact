@@ -7,18 +7,19 @@ import ListHeader from "../common/ListHeader";
 import AirlinesListTable from "./AirlinesListTable";
 import { Entities } from '../../utils/const.js';
 
-// Make search working
 export default function AirlineList() {
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [airlines, setAirlines] = useState([]);
-    const { data, dataExist, error, isLoading, isError } = useFetch(Entities.AIRLINES, null, pageNumber);
+    const [triggerFetch, setTriggerFetch] = useState(false);
+    const { data, dataExist, error, isLoading, isError } = useFetch(Entities.AIRLINES, null, pageNumber, triggerFetch);
 
     useEffect(() => {
         if (data) {
             setAirlines(data.data);
             setPageNumber(data.pageNumber);
             setTotalPages(data.totalPages);
+            setTriggerFetch(false);
         }
     }, [data]);
 
@@ -28,7 +29,7 @@ export default function AirlineList() {
 
     return (
         <>
-            <ListHeader dataExist={dataExist} dataType={Entities.AIRLINES} createButtonTitle="Create Airline" />
+            <ListHeader dataExist={dataExist} dataType={Entities.AIRLINES} createButtonTitle="Create Airline" setTriggerFetch={setTriggerFetch} />
             <br />
             {isLoading && <LoadingSpinner />}
             {isError && error && <Alert alertType="error" alertText={error.message} />}

@@ -7,18 +7,19 @@ import ListHeader from "../common/ListHeader";
 import PilotsListTable from "./PilotsListTable";
 import { Entities } from '../../utils/const.js';
 
-// Make search working
 export default function PilotsList() {
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [pilots, setPilots] = useState([]);
-    const { data, dataExist, error, isLoading, isError } = useFetch(Entities.PILOTS, null, pageNumber);
+    const [triggerFetch, setTriggerFetch] = useState(false);
+    const { data, dataExist, error, isLoading, isError } = useFetch(Entities.PILOTS, null, pageNumber, triggerFetch);
 
     useEffect(() => {
         if (data) {
             setPilots(data.data);
             setPageNumber(data.pageNumber);
             setTotalPages(data.totalPages);
+            setTriggerFetch(false);
         }
     }, [data]);
 
@@ -28,7 +29,7 @@ export default function PilotsList() {
 
     return (
         <>
-            <ListHeader dataExist={dataExist} dataType={Entities.PILOTS} createButtonTitle="Create Pilot" />
+            <ListHeader dataExist={dataExist} dataType={Entities.PILOTS} createButtonTitle="Create Pilot" setTriggerFetch={setTriggerFetch} />
             <br />
             {isLoading && <LoadingSpinner />}
             {isError && error && <Alert alertType="error" alertText={error.message} />}

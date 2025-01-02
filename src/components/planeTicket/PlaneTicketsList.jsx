@@ -7,18 +7,19 @@ import ListHeader from "../common/ListHeader";
 import PlaneTicketsListTable from "./PlaneTicketsListTable";
 import { Entities } from '../../utils/const.js';
 
-// Make search working
 export default function PlaneTicketsList() {
     const [pageNumber, setPageNumber] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [planeTickets, setPlaneTickets] = useState([]);
-    const { data, dataExist, error, isLoading, isError } = useFetch(Entities.PLANE_TICKETS, null, pageNumber);
+    const [triggerFetch, setTriggerFetch] = useState(false);
+    const { data, dataExist, error, isLoading, isError } = useFetch(Entities.PLANE_TICKETS, null, pageNumber, triggerFetch);
 
     useEffect(() => {
         if (data) {
             setPlaneTickets(data.data);
             setPageNumber(data.pageNumber);
             setTotalPages(data.totalPages);
+            setTriggerFetch(false);
         }
     }, [data]);
 
@@ -28,7 +29,7 @@ export default function PlaneTicketsList() {
 
     return (
         <>
-            <ListHeader dataExist={dataExist} dataType={Entities.PLANE_TICKETS} createButtonTitle="Create Plane Ticket" />
+            <ListHeader dataExist={dataExist} dataType={Entities.PLANE_TICKETS} createButtonTitle="Create Plane Ticket" setTriggerFetch={setTriggerFetch} />
             <br />
             {isLoading && <LoadingSpinner />}
             {isError && error && <Alert alertType="error" alertText={error.message} />}
