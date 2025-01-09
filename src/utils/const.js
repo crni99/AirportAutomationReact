@@ -7,4 +7,5 @@ export const Entities = {
     PILOTS: 'Pilots',
     PLANE_TICKETS: 'PlaneTickets',
     TRAVEL_CLASSES: 'TravelClasses',
+    HEALTH_CHECKS: 'HealthCheck',
 };  

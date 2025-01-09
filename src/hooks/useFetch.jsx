@@ -119,6 +119,9 @@ export default function useFetch(dataType, dataId, page = 1, triggerFetch) {
                     }
                     break;
 
+                case Entities.HEALTH_CHECKS:
+                    return `${apiUrl}/${dataType}`;
+
                 default:
                     url = `${apiUrl}/${dataType}?${paginationParams}`;
                     break;

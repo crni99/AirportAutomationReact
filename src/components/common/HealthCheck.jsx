@@ -1,10 +1,18 @@
 import React from 'react';
 import useFetch from "../../hooks/useFetch";
 import Alert from '../common/Alert';
+import { Entities } from '../../utils/const.js';
 
 // Not working properly if there isn't connection with the API
 export default function HealthCheck() {
-    const { data, error, isLoading, isError } = useFetch('HealthCheck', null);
+    const { data, dataExist, error, isLoading, isError } = useFetch(Entities.HEALTH_CHECKS, null, null, null);
+
+    const extractErrorMessage = (error) => {
+        if (error && error.message) {
+            return error.message;
+        }
+        return "An unknown error occurred";
+    };
 
     return (
         <div className="container mt-5">
@@ -14,8 +22,8 @@ export default function HealthCheck() {
             <div className="form-horizontal">
                 <div className="form-group">
                     {isLoading && <Alert alertType="info" alertText="Loading..." />}
-                    {isError && error && <Alert alertType="error" alertText={error} />}
-                    {data && !isError && !error ? (
+                    {isError && error && <Alert alertType="error" alertText={extractErrorMessage(error)} />}
+                    {data && dataExist && !isError && !error ? (
                         <div>
                             <dl className="row">
                                 <dt className="col-sm-2">Status</dt>
