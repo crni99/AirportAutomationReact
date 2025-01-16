@@ -51,30 +51,48 @@ export default function PassengerDetails() {
             {operationState.operationError && <Alert alertType="error" alertText={operationState.operationError} />}
             {dataExist && (
                 <>
-                    <div>
-                        <br />
-                        <dl className="row">
-                            <dt className="col-sm-2">Id</dt>
-                            <dd className="col-sm-10">{passenger.id}</dd>
-                            <dt className="col-sm-2">First Name</dt>
-                            <dd className="col-sm-10">{passenger.firstName}</dd>
-                            <dt className="col-sm-2">Last Name</dt>
-                            <dd className="col-sm-10">{passenger.lastName}</dd>
-                            <dt className="col-sm-2">UPRN</dt>
-                            <dd className="col-sm-10">{passenger.uprn}</dd>
-                            <dt className="col-sm-2">Passport</dt>
-                            <dd className="col-sm-10">{passenger.passport}</dd>
-                            <dt className="col-sm-2">Address</dt>
-                            <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
-                                onClick={() => openMap(passenger.address)}>
-                                    {passenger.address}
-                            </dd>
-                            <dt className="col-sm-2">Phone</dt>
-                            <dd className="col-sm-10">{passenger.phone}</dd>
-                        </dl>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-6">
+                                <br />
+                                <dl className="row">
+                                    <dt className="col-sm-4">Id</dt>
+                                    <dd className="col-sm-8">{passenger.id}</dd>
+                                    <dt className="col-sm-4">First Name</dt>
+                                    <dd className="col-sm-8">{passenger.firstName}</dd>
+                                    <dt className="col-sm-4">Last Name</dt>
+                                    <dd className="col-sm-8">{passenger.lastName}</dd>
+                                    <dt className="col-sm-4">UPRN</dt>
+                                    <dd className="col-sm-8">{passenger.uprn}</dd>
+                                    <dt className="col-sm-4">Passport</dt>
+                                    <dd className="col-sm-8">{passenger.passport}</dd>
+                                    <dt className="col-sm-4">Address</dt>
+                                    <dd
+                                        className="col-sm-8 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                        onClick={() => openMap(passenger.address)}
+                                    >
+                                        {passenger.address}
+                                    </dd>
+                                    <dt className="col-sm-4">Phone</dt>
+                                    <dd className="col-sm-8">{passenger.phone}</dd>
+                                </dl>
+                                <PageNavigationActions dataType={Entities.PASSENGERS} dataId={id} onEdit={() => handleOperation('edit')}
+                                    onDelete={() => handleOperation('delete')} />
+                            </div>
+                            <div className="col-md-6">
+                                <iframe
+                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(passenger.address)}&output=embed`}
+                                    width="100%"
+                                    height="320px"
+                                    style={{ border: 0 }}
+                                    allowFullScreen=""
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    title="Google Map"
+                                ></iframe>
+                            </div>
+                        </div>
                     </div>
-                    <PageNavigationActions dataType={Entities.PASSENGERS} dataId={id} onEdit={() => handleOperation('edit')}
-                        onDelete={() => handleOperation('delete')} />
                 </>
             )}
         </>

@@ -51,25 +51,41 @@ export default function DestinationDetails() {
             {operationState.operationError && <Alert alertType="error" alertText={operationState.operationError} />}
             {dataExist && (
                 <>
-                    <div>
-                        <br />
-                        <dl className="row">
-                            <dt className="col-sm-2">Id</dt>
-                            <dd className="col-sm-10">{destination.id}</dd>
-                            <dt className="col-sm-2">City</dt>
-                            <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
-                                onClick={() => openMap(destination.city)}>
-                                    {destination.city}
-                            </dd>
-                            <dt className="col-sm-2">Airport</dt>
-                            <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
-                                onClick={() => openMap(destination.airport)}>
-                                    {destination.airport}
-                            </dd>
-                        </dl>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-md-6">
+                                <br />
+                                <dl className="row">
+                                    <dt className="col-sm-2">Id</dt>
+                                    <dd className="col-sm-10">{destination.id}</dd>
+                                    <dt className="col-sm-2">City</dt>
+                                    <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                        onClick={() => openMap(destination.city)}>
+                                        {destination.city}
+                                    </dd>
+                                    <dt className="col-sm-2">Airport</dt>
+                                    <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                        onClick={() => openMap(destination.airport)}>
+                                        {destination.airport}
+                                    </dd>
+                                </dl>
+                                <PageNavigationActions dataType={Entities.DESTINATIONS} dataId={id} onEdit={() => handleOperation('edit')}
+                                    onDelete={() => handleOperation('delete')} />
+                            </div>
+                            <div className="col-md-6">
+                                <iframe
+                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(destination.city + ' ' + destination.airport)}&output=embed`}
+                                    width="100%"
+                                    height="320px"
+                                    style={{ border: 0 }}
+                                    allowFullScreen=""
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    title="Google Map"
+                                ></iframe>
+                            </div>
+                        </div>
                     </div>
-                    <PageNavigationActions dataType={Entities.DESTINATIONS} dataId={id} onEdit={() => handleOperation('edit')}
-                        onDelete={() => handleOperation('delete')} />
                 </>
             )}
         </>

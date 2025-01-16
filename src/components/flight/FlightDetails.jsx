@@ -11,6 +11,7 @@ import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 import openDetails from "../../utils/openDetailsHelper";
 import { Entities } from '../../utils/const.js';
+import openMap from '../../utils/openMapHelper.js';
 
 export default function FlightDetails() {
     const dataCtx = useContext(DataContext);
@@ -87,9 +88,13 @@ export default function FlightDetails() {
                                 </button>
                             </dd>
                             <dt className="col-sm-2">City</dt>
-                            <dd className="col-sm-10">{flight.destination.city}</dd>
+                            <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                onClick={() => openMap(flight.destination.city)}>{flight.destination.city}
+                            </dd>
                             <dt className="col-sm-2">Airport</dt>
-                            <dd className="col-sm-10">{flight.destination.airport}</dd>
+                            <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                onClick={() => openMap(flight.destination.airport)}>{flight.destination.airport}
+                            </dd>
                         </dl>
                         <hr></hr>
                         <dl className="row">
