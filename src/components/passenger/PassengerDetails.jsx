@@ -11,6 +11,7 @@ import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 import openMap from '../../utils/openMapHelper.js';
 import { Entities } from '../../utils/const.js';
+import MapEmbed from '../common/MapEmbed.jsx';
 
 export default function PassengerDetails() {
     const dataCtx = useContext(DataContext);
@@ -80,16 +81,7 @@ export default function PassengerDetails() {
                                     onDelete={() => handleOperation('delete')} />
                             </div>
                             <div className="col-md-6">
-                                <iframe
-                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(passenger.address)}&output=embed`}
-                                    width="100%"
-                                    height="320px"
-                                    style={{ border: 0 }}
-                                    allowFullScreen=""
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    title="Google Map"
-                                ></iframe>
+                                <MapEmbed address={passenger.address} />
                             </div>
                         </div>
                     </div>
