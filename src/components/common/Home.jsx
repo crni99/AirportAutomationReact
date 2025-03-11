@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from 'react';
 import { DataContext } from '../../store/data-context';
 import { getAuthToken, authenticateUser } from '../../utils/auth';
 import Alert from '../common/Alert';
-import { setupThemeToggle } from '../../utils/themeToggle';
 
 // Add loader when trying to login
 export default function Home() {
@@ -29,16 +28,6 @@ export default function Home() {
             setError('An unexpected error occurred. Please try again later.');
         }
     };
-
-    useEffect(() => {
-        const cleanupToggle = setupThemeToggle('darkModeToggle');
-
-        return () => {
-            if (cleanupToggle) {
-                cleanupToggle();
-            }
-        };
-    }, []);
 
     useEffect(() => {
         const updateDateTime = () => {

@@ -3,7 +3,9 @@ export function setupThemeToggle(buttonId) {
     const htmlElement = document.documentElement;
     const DARK_MODE = 'dark';
     const LIGHT_MODE = 'light';
-    const darkModeEnabled = localStorage.getItem('dark-mode') === 'true';
+
+    const darkModeEnabled = localStorage.getItem('theme') === DARK_MODE || 
+                            (!localStorage.getItem('theme') && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
     htmlElement.setAttribute('data-bs-theme', darkModeEnabled ? DARK_MODE : LIGHT_MODE);
 
@@ -13,7 +15,7 @@ export function setupThemeToggle(buttonId) {
         const handleToggle = () => {
             const newTheme = htmlElement.getAttribute('data-bs-theme') === DARK_MODE ? LIGHT_MODE : DARK_MODE;
             htmlElement.setAttribute('data-bs-theme', newTheme);
-            localStorage.setItem('dark-mode', newTheme === DARK_MODE);
+            localStorage.setItem('theme', newTheme);  // Save the preference in localStorage
             toggleButton.textContent = newTheme === DARK_MODE ? 'Light Mode' : 'Dark Mode';
         };
 
