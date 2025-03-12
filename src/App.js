@@ -12,9 +12,8 @@ import Header from './components/common/header/Header';
 import HealthCheck from './components/common/HealthCheck';
 import Footer from './components/common/Footer';
 import { DataContext } from './store/data-context';
-import { getAuthToken } from './utils/auth';
 import Unauthorized from './components/common/Unauthorized';
-import ApiUsersRoutes from './routes/apiUserRoutes'; 
+import ApiUsersRoutes from './routes/apiUserRoutes';
 
 /*
 Optimization: 
@@ -23,12 +22,11 @@ such as memoizing context values or using React's useMemo hook to prevent unnece
 */
 
 function App() {
-  const isLoggedIn = getAuthToken() !== null;
   const dataContext = useContext(DataContext);
 
   return (
     <DataContext.Provider value={dataContext}>
-      {isLoggedIn && <Header />}
+      <Header />
       <div className="container">
         <div className="row">
           <Routes>
