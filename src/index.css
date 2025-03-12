@@ -56,3 +56,17 @@ body {
 .container-spacing-top {
   margin-top: 2.5rem;
 }
+
+.custom-icon {
+  color: #e0e0e0;
+  transition: color 0.3s ease;
+}
+
+.custom-icon:hover {
+  color: #3459e6;
+}
+
+.custom-icon:active,
+.custom-icon:focus {
+  color: #3459e6;
+}
