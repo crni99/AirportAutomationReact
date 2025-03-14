@@ -10,7 +10,7 @@ export default function Footer() {
     return (
         <footer className="border-top footer text-muted">
             <div className="container footer-text d-flex justify-content-between align-items-center">
-                <span>{currentYear} &copy; Airport Automation React | Powered by Ognjen</span>
+                <span>{currentYear} &copy; Airport Automation React</span>
                 <div>
                     <a href="https://github.com/crni99" target="_blank" rel="noopener noreferrer">
                         <FontAwesomeIcon icon={faGithub} size="lg" className="mx-2 custom-icon" title="GitHub" />
