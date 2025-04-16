@@ -26,12 +26,10 @@ export default function Header() {
             <nav className="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="/">AirportAutomationReact</a>
-                    {isLoggedIn && (
-                        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-                    )}
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
                     <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         {isLoggedIn && (
                             <ul className="navbar-nav flex-grow-1">
