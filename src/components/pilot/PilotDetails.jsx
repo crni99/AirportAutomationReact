@@ -10,6 +10,8 @@ import Alert from '../common/Alert.jsx';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 import { Entities } from '../../utils/const.js';
+import { DD } from '..//common/table/DD.jsx';
+import { DT } from '..//common/table/DT.jsx';
 
 export default function PilotDetails() {
     const dataCtx = useContext(DataContext);
@@ -53,16 +55,16 @@ export default function PilotDetails() {
                     <div>
                         <br />
                         <dl className="row">
-                            <dt className="col-sm-2">Id</dt>
-                            <dd className="col-sm-10">{pilot.id}</dd>
-                            <dt className="col-sm-2">First Name</dt>
-                            <dd className="col-sm-10">{pilot.firstName}</dd>
-                            <dt className="col-sm-2">Last Name</dt>
-                            <dd className="col-sm-10">{pilot.lastName}</dd>
-                            <dt className="col-sm-2">UPRN</dt>
-                            <dd className="col-sm-10">{pilot.uprn}</dd>
-                            <dt className="col-sm-2">Flying Hours</dt>
-                            <dd className="col-sm-10">{pilot.flyingHours}</dd>
+                            <DT className="col-sm-2 mt-2">Id</DT>
+                            <DD className="col-sm-10 mt-2">{pilot.id}</DD>
+                            <DT className="col-sm-2 mt-2">First Name</DT>
+                            <DD className="col-sm-10 mt-2">{pilot.firstName}</DD>
+                            <DT className="col-sm-2 mt-2">Last Name</DT>
+                            <DD className="col-sm-10 mt-2">{pilot.lastName}</DD>
+                            <DT className="col-sm-2 mt-2">UPRN</DT>
+                            <DD className="col-sm-10 mt-2">{pilot.uprn}</DD>
+                            <DT className="col-sm-2 mt-2">Flying Hours</DT>
+                            <DD className="col-sm-10 mt-2">{pilot.flyingHours}</DD>
                         </dl>
                     </div>
                     <PageNavigationActions dataType={Entities.PILOTS} dataId={id} onEdit={() => handleOperation('edit')}

@@ -12,6 +12,8 @@ import { DataContext } from '../../store/data-context.jsx';
 import openMap from '../../utils/openMapHelper.js';
 import { Entities } from '../../utils/const.js';
 import MapEmbed from '../common/MapEmbed.jsx';
+import { DD } from '..//common/table/DD.jsx';
+import { DT } from '..//common/table/DT.jsx';
 
 export default function PassengerDetails() {
     const dataCtx = useContext(DataContext);
@@ -57,30 +59,30 @@ export default function PassengerDetails() {
                             <div className="col-md-6">
                                 <br />
                                 <dl className="row">
-                                    <dt className="col-sm-4">Id</dt>
-                                    <dd className="col-sm-8">{passenger.id}</dd>
-                                    <dt className="col-sm-4">First Name</dt>
-                                    <dd className="col-sm-8">{passenger.firstName}</dd>
-                                    <dt className="col-sm-4">Last Name</dt>
-                                    <dd className="col-sm-8">{passenger.lastName}</dd>
-                                    <dt className="col-sm-4">UPRN</dt>
-                                    <dd className="col-sm-8">{passenger.uprn}</dd>
-                                    <dt className="col-sm-4">Passport</dt>
-                                    <dd className="col-sm-8">{passenger.passport}</dd>
-                                    <dt className="col-sm-4">Address</dt>
-                                    <dd
-                                        className="col-sm-8 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                    <DT className="col-sm-4 mt-2">Id</DT>
+                                    <DD className="col-sm-8 mt-2">{passenger.id}</DD>
+                                    <DT className="col-sm-4 mt-2">First Name</DT>
+                                    <DD className="col-sm-8 mt-2">{passenger.firstName}</DD>
+                                    <DT className="col-sm-4 mt-2">Last Name</DT>
+                                    <DD className="col-sm-8 mt-2">{passenger.lastName}</DD>
+                                    <DT className="col-sm-4 mt-2">UPRN</DT>
+                                    <DD className="col-sm-8 mt-2">{passenger.uprn}</DD>
+                                    <DT className="col-sm-4 mt-2">Passport</DT>
+                                    <DD className="col-sm-8 mt-2">{passenger.passport}</DD>
+                                    <DT className="col-sm-4 mt-2">Address</DT>
+                                    <DD
+                                        className="col-sm-8 mt-2 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                                         onClick={() => openMap(passenger.address)}
                                     >
                                         {passenger.address}
-                                    </dd>
-                                    <dt className="col-sm-4">Phone</dt>
-                                    <dd className="col-sm-8">{passenger.phone}</dd>
+                                    </DD>
+                                    <DT className="col-sm-4 mt-2">Phone</DT>
+                                    <DD className="col-sm-8 mt-2">{passenger.phone}</DD>
                                 </dl>
                                 <PageNavigationActions dataType={Entities.PASSENGERS} dataId={id} onEdit={() => handleOperation('edit')}
                                     onDelete={() => handleOperation('delete')} />
                             </div>
-                            <div className="col-md-6">
+                            <div className="col-md-6 mt-4">
                                 <MapEmbed address={passenger.address} />
                             </div>
                         </div>

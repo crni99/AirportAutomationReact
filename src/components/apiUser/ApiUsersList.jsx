@@ -6,6 +6,7 @@ import Alert from '../common/Alert';
 import ApiUsersListTable from "./ApiUsersListTable";
 import ListHeader from "../common/ListHeader";
 import { Entities } from '../../utils/const.js';
+import PageInfo from "../common/pagination/PageInfo.jsx";
 
 export default function ApiUsersList() {
     const [pageNumber, setPageNumber] = useState(1);
@@ -41,6 +42,11 @@ export default function ApiUsersList() {
                         ) : (
                             <Alert alertType="info" alertText="No api users available" />
                         )}
+                        <PageInfo
+                            currentPage={pageNumber}
+                            totalPages={totalPages}
+                            totalCount={data?.totalCount ?? 0}
+                        />
                         <div>
                             <Pagination pageNumber={pageNumber} lastPage={totalPages} onPageChange={handlePageChange} />
                         </div>

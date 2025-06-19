@@ -10,6 +10,8 @@ import Alert from '../common/Alert';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context';
 import { Entities } from '../../utils/const.js';
+import { DD } from '..//common/table/DD.jsx';
+import { DT } from '..//common/table/DT.jsx';
 
 export default function AirlineDetails() {
     const dataCtx = useContext(DataContext);
@@ -53,10 +55,10 @@ export default function AirlineDetails() {
                     <div>
                         <br />
                         <dl className="row">
-                            <dt className="col-sm-2">Id</dt>
-                            <dd className="col-sm-10">{airline.id}</dd>
-                            <dt className="col-sm-2">Name</dt>
-                            <dd className="col-sm-10">{airline.name}</dd>
+                            <DT>Id</DT>
+                            <DD>{airline.id}</DD>
+                            <DT>Name</DT>
+                            <DD>{airline.name}</DD>
                         </dl>
                     </div>
                     <PageNavigationActions dataType={Entities.AIRLINES} dataId={id} onEdit={() => handleOperation('edit')}

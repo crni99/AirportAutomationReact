@@ -10,6 +10,8 @@ import Alert from '../common/Alert.jsx';
 import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 import { Entities } from '../../utils/const.js';
+import { DD } from '..//common/table/DD.jsx';
+import { DT } from '..//common/table/DT.jsx';
 
 export default function ApiUserDetails() {
     const dataCtx = useContext(DataContext);
@@ -53,14 +55,14 @@ export default function ApiUserDetails() {
                     <div>
                         <br />
                         <dl className="row">
-                            <dt className="col-sm-2">Id</dt>
-                            <dd className="col-sm-10">{apiUser.apiUserId}</dd>
-                            <dt className="col-sm-2">Username</dt>
-                            <dd className="col-sm-10">{apiUser.userName}</dd>
-                            <dt className="col-sm-2">Password</dt>
-                            <dd className="col-sm-10">{apiUser.password}</dd>
-                            <dt className="col-sm-2">Roles</dt>
-                            <dd className="col-sm-10">{apiUser.roles}</dd>
+                            <DT className="col-sm-2 mt-2">Id</DT>
+                            <DD className="col-sm-10 mt-2">{apiUser.apiUserId}</DD>
+                            <DT className="col-sm-2 mt-2">Username</DT>
+                            <DD className="col-sm-10 mt-2">{apiUser.userName}</DD>
+                            <DT className="col-sm-2 mt-2">Password</DT>
+                            <DD className="col-sm-10 mt-2">{apiUser.password}</DD>
+                            <DT className="col-sm-2 mt-2">Roles</DT>
+                            <DD className="col-sm-10 mt-2">{apiUser.roles}</DD>
                         </dl>
                     </div>
                     <PageNavigationActions dataType={Entities.API_USERS} dataId={id} onEdit={() => handleOperation('edit')}

@@ -11,6 +11,8 @@ import { useContext } from 'react';
 import { DataContext } from '../../store/data-context.jsx';
 import openDetails from "../../utils/openDetailsHelper.js";
 import { Entities } from '../../utils/const.js';
+import { DD } from '..//common/table/DD.jsx';
+import { DT } from '..//common/table/DT.jsx';
 
 export default function PlaneTicketDetails() {
     const dataCtx = useContext(DataContext);
@@ -54,60 +56,60 @@ export default function PlaneTicketDetails() {
                     <div>
                         <br />
                         <dl className="row">
-                            <dt className="col-sm-2">Id</dt>
-                            <dd className="col-sm-10">{planeTicket.id}</dd>
-                            <dt className="col-sm-2">Price</dt>
-                            <dd className="col-sm-10">{planeTicket.price}</dd>
-                            <dt className="col-sm-2">Purchase Date</dt>
-                            <dd className="col-sm-10">{planeTicket.purchaseDate}</dd>
-                            <dt className="col-sm-2">Seat Number</dt>
-                            <dd className="col-sm-10">{planeTicket.seatNumber}</dd>
+                            <DT className="col-sm-2">Id</DT>
+                            <DD className="col-sm-10">{planeTicket.id}</DD>
+                            <DT className="col-sm-2">Price</DT>
+                            <DD className="col-sm-10">{planeTicket.price}</DD>
+                            <DT className="col-sm-2">Purchase Date</DT>
+                            <DD className="col-sm-10">{planeTicket.purchaseDate}</DD>
+                            <DT className="col-sm-2">Seat Number</DT>
+                            <DD className="col-sm-10">{planeTicket.seatNumber}</DD>
                         </dl>
                         <hr></hr>
                         <dl className="row">
-                            <dt className="col-sm-2">Passenger Id</dt>
-                            <dd className="col-sm-10">
+                            <DT className="col-sm-2">Passenger Id</DT>
+                            <DD className="col-sm-10">
                                 <button
                                     className="btn btn-info btn-sm"
                                     onClick={() => openDetails('Passengers', planeTicket.passenger.id)}
                                 >
                                     {planeTicket.passenger.id}
                                 </button>
-                            </dd>
-                            <dt className="col-sm-2">First Name</dt>
-                            <dd className="col-sm-10">{planeTicket.passenger.firstName}</dd>
-                            <dt className="col-sm-2">Last Name</dt>
-                            <dd className="col-sm-10">{planeTicket.passenger.lastName}</dd>
+                            </DD>
+                            <DT className="col-sm-2">First Name</DT>
+                            <DD className="col-sm-10">{planeTicket.passenger.firstName}</DD>
+                            <DT className="col-sm-2">Last Name</DT>
+                            <DD className="col-sm-10">{planeTicket.passenger.lastName}</DD>
                         </dl>
                         <hr></hr>
                         <dl className="row">
-                            <dt className="col-sm-2">Travel Class Id</dt>
-                            <dd className="col-sm-10">
+                            <DT className="col-sm-2">Travel Class Id</DT>
+                            <DD className="col-sm-10">
                                 <button
                                     className="btn btn-info btn-sm"
                                     onClick={() => openDetails('TravelClasses', null)}
                                 >
                                     {planeTicket.travelClass.id}
                                 </button>
-                            </dd>
-                            <dt className="col-sm-2">Type</dt>
-                            <dd className="col-sm-10">{planeTicket.travelClass.type}</dd>
+                            </DD>
+                            <DT className="col-sm-2">Type</DT>
+                            <DD className="col-sm-10">{planeTicket.travelClass.type}</DD>
                         </dl>
                         <hr></hr>
                         <dl className="row">
-                            <dt className="col-sm-2">Id</dt>
-                            <dd className="col-sm-10">
+                            <DT className="col-sm-2">Id</DT>
+                            <DD className="col-sm-10">
                                 <button
                                     className="btn btn-info btn-sm"
                                     onClick={() => openDetails('Flights', planeTicket.flight.id)}
                                 >
                                     {planeTicket.flight.id}
                                 </button>
-                            </dd>
-                            <dt className="col-sm-2">Departure Date</dt>
-                            <dd className="col-sm-10">{planeTicket.flight.departureDate}</dd>
-                            <dt className="col-sm-2">Departure Time</dt>
-                            <dd className="col-sm-10">{planeTicket.flight.departureTime}</dd>
+                            </DD>
+                            <DT className="col-sm-2">Departure Date</DT>
+                            <DD className="col-sm-10">{planeTicket.flight.departureDate}</DD>
+                            <DT className="col-sm-2">Departure Time</DT>
+                            <DD className="col-sm-10">{planeTicket.flight.departureTime}</DD>
                         </dl>
                     </div>
                     <PageNavigationActions dataType={Entities.PLANE_TICKETS} dataId={id} onEdit={() => handleOperation('edit')}

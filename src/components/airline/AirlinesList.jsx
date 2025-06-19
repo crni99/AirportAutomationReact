@@ -6,6 +6,7 @@ import Alert from '../common/Alert';
 import ListHeader from "../common/ListHeader";
 import AirlinesListTable from "./AirlinesListTable";
 import { Entities } from '../../utils/const.js';
+import PageInfo from "../common/pagination/PageInfo.jsx";
 
 export default function AirlineList() {
     const [pageNumber, setPageNumber] = useState(1);
@@ -42,6 +43,11 @@ export default function AirlineList() {
                             <Alert alertType="info" alertText="No airlines available" />
                         )}
                     </div>
+                    <PageInfo
+                        currentPage={pageNumber}
+                        totalPages={totalPages}
+                        totalCount={data?.totalCount ?? 0}
+                    />
                     <div>
                         <Pagination pageNumber={pageNumber} lastPage={totalPages} onPageChange={handlePageChange} />
                     </div>

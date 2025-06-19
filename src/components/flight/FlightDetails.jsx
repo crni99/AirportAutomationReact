@@ -12,6 +12,8 @@ import { DataContext } from '../../store/data-context.jsx';
 import openDetails from "../../utils/openDetailsHelper";
 import { Entities } from '../../utils/const.js';
 import openMap from '../../utils/openMapHelper.js';
+import { DD } from '..//common/table/DD.jsx';
+import { DT } from '..//common/table/DT.jsx';
 
 export default function FlightDetails() {
     const dataCtx = useContext(DataContext);
@@ -55,66 +57,66 @@ export default function FlightDetails() {
                     <div>
                         <br />
                         <dl className="row">
-                            <dt className="col-sm-2">Id</dt>
-                            <dd className="col-sm-10">{flight.id}</dd>
-                            <dt className="col-sm-2">Departure Date</dt>
-                            <dd className="col-sm-10">{flight.departureDate}</dd>
-                            <dt className="col-sm-2">Departure Time</dt>
-                            <dd className="col-sm-10">{flight.departureTime}</dd>
+                            <DT className="col-sm-2">Id</DT>
+                            <DD className="col-sm-10">{flight.id}</DD>
+                            <DT className="col-sm-2">Departure Date</DT>
+                            <DD className="col-sm-10">{flight.departureDate}</DD>
+                            <DT className="col-sm-2">Departure Time</DT>
+                            <DD className="col-sm-10">{flight.departureTime}</DD>
                         </dl>
                         <hr></hr>
                         <dl className="row">
-                            <dt className="col-sm-2">Airline Id</dt>
-                            <dd className="col-sm-10">
+                            <DT className="col-sm-2">Airline Id</DT>
+                            <DD className="col-sm-10">
                                 <button
                                     className="btn btn-info btn-sm"
                                     onClick={() => openDetails('Airlines', flight.airline.id)}
                                 >
                                     {flight.airline.id}
                                 </button>
-                            </dd>
-                            <dt className="col-sm-2">Name</dt>
-                            <dd className="col-sm-10">{flight.airline.name}</dd>
+                            </DD>
+                            <DT className="col-sm-2">Name</DT>
+                            <DD className="col-sm-10">{flight.airline.name}</DD>
                         </dl>
                         <hr></hr>
                         <dl className="row">
-                            <dt className="col-sm-2">Destination Id</dt>
-                            <dd className="col-sm-10">
+                            <DT className="col-sm-2">Destination Id</DT>
+                            <DD className="col-sm-10">
                                 <button
                                     className="btn btn-info btn-sm"
                                     onClick={() => openDetails('Destinations', flight.destination.id)}
                                 >
                                     {flight.destination.id}
                                 </button>
-                            </dd>
-                            <dt className="col-sm-2">City</dt>
-                            <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                            </DD>
+                            <DT className="col-sm-2">City</DT>
+                            <DD className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                                 onClick={() => openMap(flight.destination.city)}>{flight.destination.city}
-                            </dd>
-                            <dt className="col-sm-2">Airport</dt>
-                            <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                            </DD>
+                            <DT className="col-sm-2">Airport</DT>
+                            <DD className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                                 onClick={() => openMap(flight.destination.airport)}>{flight.destination.airport}
-                            </dd>
+                            </DD>
                         </dl>
                         <hr></hr>
                         <dl className="row">
-                            <dt className="col-sm-2">Pilot Id</dt>
-                            <dd className="col-sm-10">
+                            <DT className="col-sm-2">Pilot Id</DT>
+                            <DD className="col-sm-10">
                                 <button
                                     className="btn btn-info btn-sm"
                                     onClick={() => openDetails('Pilots', flight.pilot.id)}
                                 >
                                     {flight.pilot.id}
                                 </button>
-                            </dd>
-                            <dt className="col-sm-2">First Name</dt>
-                            <dd className="col-sm-10">{flight.pilot.firstName}</dd>
-                            <dt className="col-sm-2">Last Name</dt>
-                            <dd className="col-sm-10">{flight.pilot.lastName}</dd>
-                            <dt className="col-sm-2">UPRN</dt>
-                            <dd className="col-sm-10">{flight.pilot.uprn}</dd>
-                            <dt className="col-sm-2">Flying Hours</dt>
-                            <dd className="col-sm-10">{flight.pilot.flyingHours}</dd>
+                            </DD>
+                            <DT className="col-sm-2">First Name</DT>
+                            <DD className="col-sm-10">{flight.pilot.firstName}</DD>
+                            <DT className="col-sm-2">Last Name</DT>
+                            <DD className="col-sm-10">{flight.pilot.lastName}</DD>
+                            <DT className="col-sm-2">UPRN</DT>
+                            <DD className="col-sm-10">{flight.pilot.uprn}</DD>
+                            <DT className="col-sm-2">Flying Hours</DT>
+                            <DT className="col-sm-10">{flight.pilot.flyingHours}</DT>
                         </dl>
                     </div>
                     <PageNavigationActions dataType={Entities.FLIGHTS} dataId={id} onEdit={() => handleOperation('edit')}

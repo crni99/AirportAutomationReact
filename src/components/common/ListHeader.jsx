@@ -12,7 +12,7 @@ export default function ListHeader({ dataExist, dataType, createButtonTitle, set
         <div className="container container-spacing-top">
             <div className="row justify-content-between">
                 <div className="col-md-12">
-                    <div className="d-flex justify-content-between align-items-center" style={{ width: '100%' }}>
+                    <div className="d-flex justify-content-between mt-2 mb-2" style={{ width: '100%' }}>
                         {isUser !== 'User' && dataType !== Entities.API_USERS && (
                             <CreateButton destination={`/${dataType}/Create`} title={createButtonTitle} />
                         )}

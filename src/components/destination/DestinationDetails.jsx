@@ -12,6 +12,8 @@ import { DataContext } from '../../store/data-context.jsx';
 import openMap from '../../utils/openMapHelper.js'
 import { Entities } from '../../utils/const.js';
 import MapEmbed from '../common/MapEmbed.jsx';
+import { DD } from '..//common/table/DD.jsx';
+import { DT } from '..//common/table/DT.jsx';
 
 export default function DestinationDetails() {
     const dataCtx = useContext(DataContext);
@@ -57,18 +59,18 @@ export default function DestinationDetails() {
                             <div className="col-md-6">
                                 <br />
                                 <dl className="row">
-                                    <dt className="col-sm-2">Id</dt>
-                                    <dd className="col-sm-10">{destination.id}</dd>
-                                    <dt className="col-sm-2">City</dt>
-                                    <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                    <DT className="col-sm-2 mt-2">Id</DT>
+                                    <DD className="col-sm-10 mt-2">{destination.id}</DD>
+                                    <DT className="col-sm-2 mt-2">City</DT>
+                                    <DD className="col-sm-10  mt-2 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                                         onClick={() => openMap(destination.city)}>
                                         {destination.city}
-                                    </dd>
-                                    <dt className="col-sm-2">Airport</dt>
-                                    <dd className="col-sm-10 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                                    </DD>
+                                    <DT className="col-sm-2 mt-2 ">Airport</DT>
+                                    <DD className="col-sm-10  mt-2 clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                                         onClick={() => openMap(destination.airport)}>
                                         {destination.airport}
-                                    </dd>
+                                    </DD>
                                 </dl>
                                 <PageNavigationActions dataType={Entities.DESTINATIONS} dataId={id} onEdit={() => handleOperation('edit')}
                                     onDelete={() => handleOperation('delete')} />

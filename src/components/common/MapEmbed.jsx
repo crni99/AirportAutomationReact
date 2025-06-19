@@ -8,7 +8,7 @@ const MapEmbed = ({ address }) => {
             src={`https://maps.google.com/maps?q=${encodeURIComponent(address)}&output=embed`}
             width="100%"
             height="320px"
-            style={{ border: 0 }}
+            style={{ border: 0, borderRadius: '0.375rem' }}
             allowFullScreen=""
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
