@@ -1,19 +1,25 @@
+import React  from 'react';
+import TableActions from '../common/table/TableActions';
+import { Entities } from '../../utils/const';
+
 export default function AirlinesListTable( {airlines }) {
     return (
         <div>
             <hr />
-            <table className="table table-responsive table-striped table-hover">
+            <table className="table table-responsive table-striped">
                 <thead>
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
                     {airlines.map(airline => (
-                        <tr key={airline.id} className="clickable-row" onClick={() => window.open(`/Airlines/${airline.id}`, '_blank')}>
+                        <tr>
                             <td>{airline.id}</td>
                             <td>{airline.name}</td>
+                            <TableActions entity={Entities.AIRLINES} id={airline.id} />
                         </tr>
                     ))}
                 </tbody>

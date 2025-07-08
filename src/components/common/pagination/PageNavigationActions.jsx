@@ -8,8 +8,6 @@ const isUser = getRole();
 
 export default function PageNavigationActions({ dataType, dataId, onEdit, onDelete }) {
 
-    
-
     return (
         <div>
             {isUser !== 'User' && (

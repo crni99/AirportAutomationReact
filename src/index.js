@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import './bootstrap/dist/css/bootstrap.css';
 import '../src/index.css';
 import '../src/App.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
