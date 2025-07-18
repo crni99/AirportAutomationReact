@@ -13,7 +13,17 @@ export default function DestinationsList() {
     const [totalPages, setTotalPages] = useState(1);
     const [destinations, setDestinations] = useState([]);
     const [triggerFetch, setTriggerFetch] = useState(false);
-    const { data, dataExist, error, isLoading, isError } = useFetch(Entities.DESTINATIONS, null, pageNumber, triggerFetch);
+    const [rowsPerPage, setRowsPerPage] = useState(() => {
+        const saved = localStorage.getItem("rowsPerPage");
+        return saved ? Number(saved) : 10;
+    });
+    const { data, dataExist, error, isLoading, isError } = useFetch(
+        Entities.DESTINATIONS,
+        null,
+        pageNumber,
+        triggerFetch,
+        rowsPerPage
+    );
 
     useEffect(() => {
         if (data) {
@@ -28,16 +38,26 @@ export default function DestinationsList() {
         setPageNumber(newPageNumber);
     }
 
+    useEffect(() => {
+        setTriggerFetch(true);
+    }, [rowsPerPage]);
+
     return (
         <>
-            <ListHeader dataExist={dataExist} dataType={Entities.DESTINATIONS} createButtonTitle="Create Destination" searchText="Search by Name:" setTriggerFetch={setTriggerFetch} />
+            <ListHeader
+                dataExist={dataExist}
+                dataType={Entities.DESTINATIONS}
+                createButtonTitle="Create Destination"
+                searchText="Search by Name:"
+                setTriggerFetch={setTriggerFetch}
+            />
             <br />
             {isLoading && <LoadingSpinner />}
             {isError && error && <Alert alertType="error" alertText={error.message} />}
             {!isError && !isLoading && (
                 <div className="form-horizontal">
                     <div className="form-group">
-                        {destinations && destinations.length > 0 ? (
+                        {destinations?.length > 0 ? (
                             <DestinationsListTable destinations={destinations} />
                         ) : (
                             <Alert alertType="info" alertText="No destinations available" />
@@ -48,7 +68,13 @@ export default function DestinationsList() {
                             totalCount={data?.totalCount ?? 0}
                         />
                         <div>
-                            <Pagination pageNumber={pageNumber} lastPage={totalPages} onPageChange={handlePageChange} />
+                            <Pagination
+                                pageNumber={pageNumber}
+                                lastPage={totalPages}
+                                onPageChange={handlePageChange}
+                                rowsPerPage={rowsPerPage}
+                                onRowsPerPageChange={setRowsPerPage}
+                            />
                         </div>
                     </div>
                 </div>

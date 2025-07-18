@@ -5,7 +5,7 @@ import { DataContext } from '../store/data-context.jsx';
 import { generateErrorMessage, handleNetworkError } from '../utils/errorUtils.js';
 import { Entities } from '../utils/const.js';
 
-export default function useFetch(dataType, dataId, page = 1, triggerFetch) {
+export default function useFetch(dataType, dataId, page = 1, triggerFetch, rowsPerPage) {
     const dataCtx = useContext(DataContext);
 
     const [data, setData] = useState(null);
@@ -39,7 +39,7 @@ export default function useFetch(dataType, dataId, page = 1, triggerFetch) {
                 if (!dataCtx || !dataCtx.apiUrl) {
                     throw new Error('API URL is not available');
                 }
-                const url = buildURL(dataCtx.apiUrl, dataType, dataId, page, dataCtx.pageSize);
+                const url = buildURL(dataCtx.apiUrl, dataType, dataId, page, rowsPerPage);
                 const response = await fetch(url, { headers: buildHeaders() });
                 handleResponse(response);
             } catch (error) {
@@ -50,7 +50,7 @@ export default function useFetch(dataType, dataId, page = 1, triggerFetch) {
         }
 
         fetchData();
-    }, [dataType, dataId, page, dataCtx, handleResponse, triggerFetch]);
+    }, [dataType, dataId, page, dataCtx, handleResponse, triggerFetch, rowsPerPage]);
 
     function buildURL(apiUrl, dataType, dataId, page, pageSize) {
         let url = `${apiUrl}/${dataType}`;

@@ -16,7 +16,7 @@ export default function AirlinesListTable( {airlines }) {
                 </thead>
                 <tbody id="tableBody">
                     {airlines.map(airline => (
-                        <tr>
+                        <tr key={airline.id}>
                             <td>{airline.id}</td>
                             <td>{airline.name}</td>
                             <TableActions entity={Entities.AIRLINES} id={airline.id} />

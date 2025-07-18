@@ -6,7 +6,7 @@ html {
 
 @media (min-width: 768px) {
   html {
-      font-size: 16px;
+    font-size: 16px;
   }
 }
 
@@ -41,7 +41,7 @@ body {
 
 @media (min-width: 769px) {
   .form-column-align {
-      margin-top: 5rem;
+    margin-top: 5rem;
   }
 }
 
@@ -72,28 +72,36 @@ body {
 }
 
 .btn-icon-open i {
-    color: #287bb5 !important;
-    transition: color 0.3s ease;
+  color: #287bb5 !important;
+  transition: color 0.3s ease;
 }
 
 .btn-icon-open:hover i {
-    color: #1b4e6b !important;
+  color: #1b4e6b !important;
 }
 
 .btn-icon-edit i {
-    color: #2fb380 !important;
-    transition: color 0.3s ease;
+  color: #2fb380 !important;
+  transition: color 0.3s ease;
 }
 
 .btn-icon-edit:hover i {
-    color: #20785a !important;
+  color: #20785a !important;
 }
 
 .btn-icon-delete i {
-    color: #da292e !important;
-    transition: color 0.3s ease;
+  color: #da292e !important;
+  transition: color 0.3s ease;
 }
 
 .btn-icon-delete:hover i {
-    color: #a21e22 !important;
+  color: #a21e22 !important;
+}
+
+#rowsPerPage {
+  height: 41.6px;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  vertical-align: middle;
 }

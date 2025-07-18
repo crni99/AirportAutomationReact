@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { handleSignOut, getAuthToken, getRole } from "../../../utils/auth";
 import { setupThemeToggle } from "../../../utils/themeToggle";
 import NavItem from './NavItem';
+import NavDropdown from './NavDropdown';
 
 export default function Header() {
 
@@ -33,15 +34,33 @@ export default function Header() {
                     <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         {isLoggedIn && (
                             <ul className="navbar-nav flex-grow-1">
-                                <NavItem type='Passengers' text='Passenger' />
-                                <NavItem type='TravelClasses' text='Travel Class' />
-                                <NavItem type='Destinations' text='Destination' />
-                                <NavItem type='Pilots' text='Pilot' />
-                                <NavItem type='Airlines' text='Airline' />
-                                <NavItem type='Flights' text='Flight' />
-                                <NavItem type='PlaneTickets' text='Plane Ticket' />
+                                <NavDropdown type="Passengers" text="Passenger" items={[
+                                    { label: "All Passengers", action: "" },
+                                    { label: "Add Passenger", action: "Create" }
+                                ]} />
+                                <NavItem type="TravelClasses" text="Travel Class" />
+                                <NavDropdown type="Destinations" text="Destination" items={[
+                                    { label: "All Destinations", action: "" },
+                                    { label: "Add Destination", action: "Create" }
+                                ]} />
+                                <NavDropdown type="Pilots" text="Pilot" items={[
+                                    { label: "All Pilots", action: "" },
+                                    { label: "Add Pilot", action: "Create" }
+                                ]} />
+                                <NavDropdown type="Airlines" text="Airline" items={[
+                                    { label: "All Airlines", action: "" },
+                                    { label: "Add Airline", action: "Create" }
+                                ]} />
+                                <NavDropdown type="Flights" text="Flight" items={[
+                                    { label: "All Flights", action: "" },
+                                    { label: "Add Flight", action: "Create" }
+                                ]} />
+                                <NavDropdown type="PlaneTickets" text="Plane Ticket" items={[
+                                    { label: "All Plane Tickets", action: "" },
+                                    { label: "Add Plane Ticket", action: "Create" }
+                                ]} />
                                 {role === 'SuperAdmin' && (
-                                    <NavItem type='ApiUsers' text='Api User' />
+                                    <NavItem type="ApiUsers" text="Api User" />
                                 )}
                             </ul>
                         )}
@@ -50,7 +69,7 @@ export default function Header() {
                                 <button id="darkModeToggle" className="btn btn-secondary">Dark Mode</button>
                             </li>
                             {isLoggedIn && (
-                                <NavItem type='HealthCheck' text='Status Check' />
+                                <NavItem type="HealthCheck" text="Status Check" />
                             )}
                             {isLoggedIn && (
                                 <li className="nav-item">

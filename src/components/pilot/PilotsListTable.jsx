@@ -19,7 +19,7 @@ export default function PilotsListTable( {pilots }) {
                 </thead>
                 <tbody id="tableBody">
                     {pilots.map(pilot => (
-                        <tr>
+                        <tr key={pilot.id}>
                             <td>{pilot.id}</td>
                             <td>{pilot.firstName}</td>
                             <td>{pilot.lastName}</td>

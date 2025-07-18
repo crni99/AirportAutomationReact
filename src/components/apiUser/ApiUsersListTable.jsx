@@ -18,7 +18,7 @@ export default function ApiUsersListTable( {apiUsers }) {
                 </thead>
                 <tbody id="tableBody">
                     {apiUsers.map(apiUser => (
-                        <tr>
+                        <tr key={apiUser.apiUserId}>
                             <td>{apiUser.apiUserId}</td>
                             <td>{apiUser.userName}</td>
                             <td>{apiUser.password}</td>

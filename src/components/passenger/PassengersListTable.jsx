@@ -22,7 +22,7 @@ export default function PassengersListTable( {passengers }) {
                 </thead>
                 <tbody id="tableBody">
                     {passengers.map(passenger => (
-                        <tr>
+                        <tr key={passenger.id}>
                             <td>{passenger.id}</td>
                             <td>{passenger.firstName}</td>
                             <td>{passenger.lastName}</td>

@@ -17,7 +17,7 @@ export default function FlightsListTable( {flights }) {
                 </thead>
                 <tbody id="tableBody">
                     {flights.map(flight => (
-                        <tr>
+                        <tr key={flight.id}>
                             <td>{flight.id}</td>
                             <td>{flight.departureDate}</td>
                             <td>{flight.departureTime}</td>

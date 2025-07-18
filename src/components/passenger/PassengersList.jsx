@@ -13,7 +13,17 @@ export default function PassengersList() {
     const [totalPages, setTotalPages] = useState(1);
     const [passengers, setPassengers] = useState([]);
     const [triggerFetch, setTriggerFetch] = useState(false);
-    const { data, dataExist, error, isLoading, isError } = useFetch(Entities.PASSENGERS, null, pageNumber, triggerFetch);
+    const [rowsPerPage, setRowsPerPage] = useState(() => {
+        const saved = localStorage.getItem("rowsPerPage");
+        return saved ? Number(saved) : 10;
+    });
+    const { data, dataExist, error, isLoading, isError } = useFetch(
+        Entities.PASSENGERS,
+        null,
+        pageNumber,
+        triggerFetch,
+        rowsPerPage
+    );
 
     useEffect(() => {
         if (data) {
@@ -27,6 +37,10 @@ export default function PassengersList() {
     function handlePageChange(newPageNumber) {
         setPageNumber(newPageNumber);
     }
+
+    useEffect(() => {
+        setTriggerFetch(true);
+    }, [rowsPerPage]);
 
     return (
         <>
@@ -48,7 +62,13 @@ export default function PassengersList() {
                             totalCount={data?.totalCount ?? 0}
                         />
                         <div>
-                            <Pagination pageNumber={pageNumber} lastPage={totalPages} onPageChange={handlePageChange} />
+                            <Pagination
+                                pageNumber={pageNumber}
+                                lastPage={totalPages}
+                                onPageChange={handlePageChange}
+                                rowsPerPage={rowsPerPage}
+                                onRowsPerPageChange={setRowsPerPage}
+                            />
                         </div>
                     </div>
                 </div>

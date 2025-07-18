@@ -18,7 +18,7 @@ export default function DestinationsListTable( {destinations }) {
                 </thead>
                 <tbody id="tableBody">
                     {destinations.map(destination => (
-                        <tr>
+                        <tr key={destination.id}>
                             <td>{destination.id}</td>
                             <td className="clickable-row link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                                 onClick={() => openMap(destination.airport)}>
