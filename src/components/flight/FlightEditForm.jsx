@@ -27,7 +27,7 @@ export default function FlightEditForm() {
         isPending: false,
     });
 
-    const { data: flightData, fetchError, isLoading, isError } = useFetch(Entities.FLIGHTS, id);
+    const { data: flightData, isLoading, isError, error } = useFetch(Entities.FLIGHTS, id);
 
     useEffect(() => {
         if (flightData) {
@@ -181,7 +181,11 @@ export default function FlightEditForm() {
                     </div>
                 </div>
                 {isLoading && <Alert alertType="info" alertText="Loading..." />}
-                {isError && <Alert alertType="error" alertText={fetchError} />}
+                {isError && error && (
+                    <Alert alertType="error">
+                        <strong>{error.type}</strong>: {error.message}
+                    </Alert>
+                )}
                 {formData.error && <Alert alertType="error" alertText={formData.error} />}
             </form>
             <nav aria-label="Page navigation">

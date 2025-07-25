@@ -24,11 +24,12 @@ export default function ApiUserEditForm() {
         isPending: false,
     });
 
-    const { data: apiUserData, fetchError, isLoading, isError } = useFetch(Entities.API_USERS, id);
+    const { data: apiUserData, isLoading, isError, error } = useFetch(Entities.API_USERS, id);
 
     useEffect(() => {
         if (apiUserData) {
-            setFormData((prevState) => ({ ...prevState, 
+            setFormData((prevState) => ({
+                ...prevState,
                 userName: apiUserData.userName || '',
                 password: apiUserData.password || '',
                 roles: apiUserData.roles || ''
@@ -128,7 +129,11 @@ export default function ApiUserEditForm() {
                         </button>
                     </div>
                     {isLoading && <Alert alertType="info" alertText="Loading..." />}
-                    {isError && <Alert alertType="error" alertText={fetchError} />}
+                    {isError && error && (
+                        <Alert alertType="error">
+                            <strong>{error.type}</strong>: {error.message}
+                        </Alert>
+                    )}
                     {formData.error && <Alert alertType="error" alertText={formData.error} />}
                 </form>
             </div>

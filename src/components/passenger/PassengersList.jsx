@@ -47,7 +47,11 @@ export default function PassengersList() {
             <ListHeader dataExist={dataExist} dataType={Entities.PASSENGERS} createButtonTitle="Create Passenger" setTriggerFetch={setTriggerFetch} />
             <br />
             {isLoading && <LoadingSpinner />}
-            {isError && error && <Alert alertType="error" alertText={error.message} />}
+            {isError && error && (
+                <Alert alertType="error">
+                    <strong>{error.type}</strong>: {error.message}
+                </Alert>
+            )}
             {!isError && !isLoading && (
                 <div className="form-horizontal">
                     <div className="form-group">

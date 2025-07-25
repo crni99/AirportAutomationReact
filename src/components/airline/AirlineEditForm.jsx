@@ -22,7 +22,7 @@ export default function AirlineEditForm() {
         isPending: false,
     });
 
-    const { data: airlineData, fetchError, isLoading, isError } = useFetch(Entities.AIRLINES, id);
+    const { data: airlineData, isLoading, isError, error } = useFetch(Entities.AIRLINES, id);
 
     useEffect(() => {
         if (airlineData) {
@@ -96,7 +96,11 @@ export default function AirlineEditForm() {
                         </button>
                     </div>
                     {isLoading && <Alert alertType="info" alertText="Loading..." />}
-                    {isError && <Alert alertType="error" alertText={fetchError} />}
+                    {isError && error && (
+                        <Alert alertType="error">
+                            <strong>{error.type}</strong>: {error.message}
+                        </Alert>
+                    )}
                     {formData.error && <Alert alertType="error" alertText={formData.error} />}
                 </form>
             </div>

@@ -34,23 +34,41 @@ export default function useFetch(dataType, dataId, page = 1, triggerFetch, rowsP
     }, [dataType, dataId]);
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         async function fetchData() {
+            setIsLoading(true);
             try {
                 if (!dataCtx || !dataCtx.apiUrl) {
                     throw new Error('API URL is not available');
                 }
                 const url = buildURL(dataCtx.apiUrl, dataType, dataId, page, rowsPerPage);
-                const response = await fetch(url, { headers: buildHeaders() });
-                handleResponse(response);
+                const response = await fetch(url, {
+                    headers: buildHeaders(),
+                    signal,
+                });
+
+                if (!signal.aborted) {
+                    await handleResponse(response);
+                }
             } catch (error) {
-                handleFetchError(error);
+                if (error.name !== 'AbortError') {
+                    handleFetchError(error);
+                }
             } finally {
-                setIsLoading(false);
+                if (!signal.aborted) {
+                    setIsLoading(false);
+                }
             }
         }
-
         fetchData();
+
+        return () => {
+            controller.abort();
+        };
     }, [dataType, dataId, page, dataCtx, handleResponse, triggerFetch, rowsPerPage]);
+
 
     function buildURL(apiUrl, dataType, dataId, page, pageSize) {
         let url = `${apiUrl}/${dataType}`;
@@ -142,7 +160,7 @@ export default function useFetch(dataType, dataId, page = 1, triggerFetch, rowsP
                     url = `${apiUrl}/${Entities.HEALTH_CHECKS}`;
                     break;
                 }
-                
+
                 default:
                     url = `${apiUrl}/${dataType}?${paginationParams}`;
                     break;
@@ -161,13 +179,20 @@ export default function useFetch(dataType, dataId, page = 1, triggerFetch, rowsP
     }
 
     function handleFetchError(error) {
-        const networkErrorMessage = handleNetworkError(error);
-        if (networkErrorMessage) {
-            setError(networkErrorMessage);
+        const networkError = handleNetworkError(error);
+        if (networkError) {
+            setError({
+                type: networkError.type || 'Network Error',
+                message: networkError.message || 'A network issue occurred.'
+            });
         } else {
-            setError(error);
+            setError({
+                type: error.name || 'Fetch Error',
+                message: error.message || 'An unknown error occurred.'
+            });
         }
         setIsError(true);
     }
+
     return { data, dataExist, error, isLoading, isError };
 }

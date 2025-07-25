@@ -19,7 +19,11 @@ export default function TravelClassesList() {
         <>
             <br />
             {isLoading && <LoadingSpinner />}
-            {isError && error && <Alert alertType="error" alertText={error.message} />}
+            {isError && error && (
+                <Alert alertType="error">
+                    <strong>{error.type}</strong>: {error.message}
+                </Alert>
+            )}
             {!isError && !isLoading && (
                 <div className="form-horizontal">
                     <div className="form-group">

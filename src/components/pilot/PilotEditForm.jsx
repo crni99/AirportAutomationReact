@@ -25,15 +25,16 @@ export default function PilotEditForm() {
         isPending: false,
     });
 
-    const { data: pilotData, fetchError, isLoading, isError } = useFetch(Entities.PILOTS, id);
+    const { data: pilotData, isLoading, isError, error } = useFetch(Entities.PILOTS, id);
 
     useEffect(() => {
         if (pilotData) {
-            setFormData((prevState) => ({ ...prevState, 
-                firstName: pilotData.firstName || '', 
-                lastName: pilotData.lastName || '' ,
-                uprn: pilotData.uprn || '' ,
-                flyingHours: pilotData.flyingHours || '' ,
+            setFormData((prevState) => ({
+                ...prevState,
+                firstName: pilotData.firstName || '',
+                lastName: pilotData.lastName || '',
+                uprn: pilotData.uprn || '',
+                flyingHours: pilotData.flyingHours || '',
             }));
         }
     }, [pilotData]);
@@ -50,8 +51,8 @@ export default function PilotEditForm() {
             return;
         }
 
-        const pilot = { 
-            FirstName: formData.firstName, 
+        const pilot = {
+            FirstName: formData.firstName,
             LastName: formData.lastName,
             UPRN: formData.uprn,
             FlyingHours: formData.flyingHours,
@@ -144,7 +145,11 @@ export default function PilotEditForm() {
                         </button>
                     </div>
                     {isLoading && <Alert alertType="info" alertText="Loading..." />}
-                    {isError && <Alert alertType="error" alertText={fetchError} />}
+                    {isError && error && (
+                        <Alert alertType="error">
+                            <strong>{error.type}</strong>: {error.message}
+                        </Alert>
+                    )}
                     {formData.error && <Alert alertType="error" alertText={formData.error} />}
                 </form>
             </div>

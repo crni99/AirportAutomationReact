@@ -27,17 +27,18 @@ export default function PassengerEditForm() {
         isPending: false,
     });
 
-    const { data: passengerData, fetchError, isLoading, isError } = useFetch(Entities.PASSENGERS, id);
+    const { data: passengerData, isLoading, isError, error } = useFetch(Entities.PASSENGERS, id);
 
     useEffect(() => {
         if (passengerData) {
-            setFormData((prevState) => ({ ...prevState, 
-                firstName: passengerData.firstName || '', 
-                lastName: passengerData.lastName || '' ,
-                uprn: passengerData.uprn || '' ,
-                passport: passengerData.passport || '' ,
-                address: passengerData.address || '' ,
-                phone: passengerData.phone || '' ,
+            setFormData((prevState) => ({
+                ...prevState,
+                firstName: passengerData.firstName || '',
+                lastName: passengerData.lastName || '',
+                uprn: passengerData.uprn || '',
+                passport: passengerData.passport || '',
+                address: passengerData.address || '',
+                phone: passengerData.phone || '',
             }));
         }
     }, [passengerData]);
@@ -54,9 +55,9 @@ export default function PassengerEditForm() {
             return;
         }
 
-        const passenger = { 
+        const passenger = {
             Id: id,
-            FirstName: formData.firstName, 
+            FirstName: formData.firstName,
             LastName: formData.lastName,
             UPRN: formData.uprn,
             Passport: formData.passport,
@@ -173,7 +174,11 @@ export default function PassengerEditForm() {
                         </button>
                     </div>
                     {isLoading && <Alert alertType="info" alertText="Loading..." />}
-                    {isError && <Alert alertType="error" alertText={fetchError} />}
+                    {isError && error && (
+                        <Alert alertType="error">
+                            <strong>{error.type}</strong>: {error.message}
+                        </Alert>
+                    )}
                     {formData.error && <Alert alertType="error" alertText={formData.error} />}
                 </form>
             </div>
