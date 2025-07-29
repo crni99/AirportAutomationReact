@@ -36,28 +36,28 @@ export default function Header() {
                             <ul className="navbar-nav flex-grow-1">
                                 <NavDropdown type="Passengers" text="Passenger" items={[
                                     { label: "All Passengers", action: "" },
-                                    { label: "Add Passenger", action: "Create" }
+                                    ...(role !== 'User' ? [{ label: "Add Passenger", action: "Create" }] : [])
                                 ]} />
                                 <NavItem type="TravelClasses" text="Travel Class" />
                                 <NavDropdown type="Destinations" text="Destination" items={[
                                     { label: "All Destinations", action: "" },
-                                    { label: "Add Destination", action: "Create" }
+                                    ...(role !== 'User' ? [{ label: "Add Destination", action: "Create" }] : [])
                                 ]} />
                                 <NavDropdown type="Pilots" text="Pilot" items={[
                                     { label: "All Pilots", action: "" },
-                                    { label: "Add Pilot", action: "Create" }
+                                    ...(role !== 'User' ? [{ label: "Add Pilot", action: "Create" }] : [])
                                 ]} />
                                 <NavDropdown type="Airlines" text="Airline" items={[
                                     { label: "All Airlines", action: "" },
-                                    { label: "Add Airline", action: "Create" }
+                                    ...(role !== 'User' ? [{ label: "Add Airline", action: "Create" }] : [])
                                 ]} />
                                 <NavDropdown type="Flights" text="Flight" items={[
                                     { label: "All Flights", action: "" },
-                                    { label: "Add Flight", action: "Create" }
+                                    ...(role !== 'User' ? [{ label: "Add Flight", action: "Create" }] : [])
                                 ]} />
                                 <NavDropdown type="PlaneTickets" text="Plane Ticket" items={[
                                     { label: "All Plane Tickets", action: "" },
-                                    { label: "Add Plane Ticket", action: "Create" }
+                                    ...(role !== 'User' ? [{ label: "Add Plane Ticket", action: "Create" }] : [])
                                 ]} />
                                 {role === 'SuperAdmin' && (
                                     <NavItem type="ApiUsers" text="Api User" />
